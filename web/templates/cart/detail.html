@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>Carrito</h2>
+<table class="table table-dark table-striped">
+  <thead><tr><th>Producto</th><th>Cantidad</th><th>Precio</th></tr></thead>
+  <tbody>
+  {% for i in cart %}
+    <tr><td>{{ i.name }}</td><td>{{ i.qty }}</td><td>${{ i.price }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p class="text-end"><strong>Total: ${{ total }}</strong></p>
+<form id="mp-form" method="post" action="{% url 'payments:mp_create' %}">
+  {% csrf_token %}
+  <button class="btn btn-mp">Pagar con Mercado Pago</button>
+</form>
+<script>
+document.getElementById('mp-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const res = await fetch(e.target.action, {method:'POST', headers: {'X-CSRFToken': '{{ csrf_token }}'}});
+  const data = await res.json();
+  if (data.init_point){ window.location.href = data.init_point; }
+  else { alert(data.error || 'No se pudo iniciar el pago'); }
+});
+</script>
+{% endblock %}
