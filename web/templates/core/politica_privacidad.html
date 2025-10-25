@@ -1,0 +1,180 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="container my-5">
+    <!-- Header con estilo Rayo -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold mb-3" style="color: #fff;">Política de Privacidad</h1>
+        <div style="width: 80px; height: 3px; background: var(--rayo-red, #b51f24); margin: 0 auto;"></div>
+    </div>
+
+    <!-- Introducción destacada -->
+    <div class="card mb-5 p-4"
+        style="background: rgba(181, 31, 36, 0.1); border: 1px solid var(--rayo-red, #b51f24); border-radius: 0.5rem;">
+        <div class="d-flex align-items-start">
+            <div
+                style="width: 50px; height: 50px; background: var(--rayo-red, #b51f24); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-right: 1.5rem; flex-shrink: 0;">
+                <i class="bi bi-shield-lock" style="color: #fff; font-size: 1.75rem;"></i>
+            </div>
+            <div>
+                <h5 class="mb-2" style="color: #fff; font-weight: 600;">Tu privacidad es nuestra prioridad</h5>
+                <p class="mb-0" style="color: #e9e9e9; line-height: 1.7;">
+                    En <strong style="color: var(--rayo-red, #b51f24);">Rayo Indumentaria</strong> valoramos tu
+                    privacidad y nos comprometemos a proteger tus datos personales. Esta política
+                    explica cómo recopilamos, usamos y protegemos tu información.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secciones con iconos -->
+    <div class="row g-4">
+        <!-- Datos que recopilamos -->
+        <div class="col-lg-6">
+            <div class="card h-100"
+                style="background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 0.5rem; transition: all 0.3s ease;">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div
+                            style="width: 45px; height: 45px; background: rgba(181, 31, 36, 0.2); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                            <i class="bi bi-database" style="color: var(--rayo-red, #b51f24); font-size: 1.5rem;"></i>
+                        </div>
+                        <h4 class="mb-0" style="color: #fff; font-weight: 600;">Datos que recopilamos</h4>
+                    </div>
+                    <p style="color: #e9e9e9; line-height: 1.7; margin-bottom: 1rem;">
+                        Recopilamos información como nombre, correo electrónico, dirección y teléfono cuando realizás
+                        una compra o creás
+                        una cuenta.
+                    </p>
+                    <ul style="color: #999; line-height: 1.8; padding-left: 1.25rem;">
+                        <li>Información de contacto personal</li>
+                        <li>Datos de facturación y envío</li>
+                        <li>Historial de compras</li>
+                        <li>Preferencias de navegación</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Uso de la información -->
+        <div class="col-lg-6">
+            <div class="card h-100"
+                style="background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 0.5rem; transition: all 0.3s ease;">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div
+                            style="width: 45px; height: 45px; background: rgba(181, 31, 36, 0.2); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                            <i class="bi bi-gear" style="color: var(--rayo-red, #b51f24); font-size: 1.5rem;"></i>
+                        </div>
+                        <h4 class="mb-0" style="color: #fff; font-weight: 600;">Uso de la información</h4>
+                    </div>
+                    <p style="color: #e9e9e9; line-height: 1.7; margin-bottom: 1rem;">
+                        Los datos se utilizan únicamente para procesar pedidos, mejorar la experiencia de compra y
+                        enviar
+                        actualizaciones relacionadas con tus pedidos o promociones.
+                    </p>
+                    <ul style="color: #999; line-height: 1.8; padding-left: 1.25rem;">
+                        <li>Procesamiento de pedidos</li>
+                        <li>Mejora de servicios</li>
+                        <li>Comunicaciones relevantes</li>
+                        <li>Análisis de tendencias</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Protección de datos -->
+        <div class="col-lg-6">
+            <div class="card h-100"
+                style="background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 0.5rem; transition: all 0.3s ease;">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div
+                            style="width: 45px; height: 45px; background: rgba(181, 31, 36, 0.2); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                            <i class="bi bi-shield-check"
+                                style="color: var(--rayo-red, #b51f24); font-size: 1.5rem;"></i>
+                        </div>
+                        <h4 class="mb-0" style="color: #fff; font-weight: 600;">Protección de datos</h4>
+                    </div>
+                    <p style="color: #e9e9e9; line-height: 1.7; margin-bottom: 1rem;">
+                        Implementamos medidas de seguridad técnicas y administrativas para resguardar tu información
+                        contra accesos no
+                        autorizados.
+                    </p>
+                    <ul style="color: #999; line-height: 1.8; padding-left: 1.25rem;">
+                        <li>Encriptación SSL/TLS</li>
+                        <li>Servidores seguros</li>
+                        <li>Acceso restringido</li>
+                        <li>Auditorías regulares</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Derechos del usuario -->
+        <div class="col-lg-6">
+            <div class="card h-100"
+                style="background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 0.5rem; transition: all 0.3s ease;">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div
+                            style="width: 45px; height: 45px; background: rgba(181, 31, 36, 0.2); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                            <i class="bi bi-person-check"
+                                style="color: var(--rayo-red, #b51f24); font-size: 1.5rem;"></i>
+                        </div>
+                        <h4 class="mb-0" style="color: #fff; font-weight: 600;">Derechos del usuario</h4>
+                    </div>
+                    <p style="color: #e9e9e9; line-height: 1.7; margin-bottom: 1rem;">
+                        Podés acceder, modificar o eliminar tus datos personales comunicándote con nosotros a
+                        <strong style="color: var(--rayo-red, #b51f24);">contacto@rayoindumentaria.com</strong>.
+                    </p>
+                    <ul style="color: #999; line-height: 1.8; padding-left: 1.25rem;">
+                        <li>Acceso a tus datos</li>
+                        <li>Rectificación de información</li>
+                        <li>Eliminación de cuenta</li>
+                        <li>Portabilidad de datos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer con contacto -->
+    <div class="card mt-5 p-4"
+        style="background: #000; border: 1px solid var(--rayo-red, #b51f24); border-radius: 0.5rem;">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h5 class="mb-2" style="color: #fff;">¿Tenés dudas sobre tu privacidad?</h5>
+                <p class="mb-0" style="color: #999;">Contactanos y te responderemos a la brevedad</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a href="mailto:contacto@rayoindumentaria.com" class="btn btn-danger"
+                    style="background: var(--rayo-red, #b51f24); border: none; padding: 0.75rem 1.5rem; font-weight: 600;">
+                    <i class="bi bi-envelope me-2"></i>Contactar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Última actualización -->
+    <div class="text-center mt-4">
+        <p style="color: #666; font-size: 0.875rem;">
+            <i class="bi bi-calendar-check me-2"></i>
+            Última actualización: {{ "now"|date:"d/m/Y" }}
+        </p>
+    </div>
+</div>
+
+<style>
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(181, 31, 36, 0.3);
+        border-color: var(--rayo-red, #b51f24) !important;
+    }
+
+    .btn-danger:hover {
+        background: #8a1519 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(181, 31, 36, 0.4);
+    }
+</style>
+{% endblock %}

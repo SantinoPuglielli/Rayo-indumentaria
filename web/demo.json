@@ -1,0 +1,117 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "name": "Remeras",
+      "slug": "remeras"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "name": "Buzos",
+      "slug": "buzos"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "name": "Producto 1",
+      "description": "Descripción de ejemplo",
+      "price": "1099.00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "category": 1,
+      "name": "Producto 2",
+      "description": "Descripción de ejemplo",
+      "price": "1199.00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+      "category": 1,
+      "name": "Producto 3",
+      "description": "Descripción de ejemplo",
+      "price": "1299.00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+      "category": 1,
+      "name": "Producto 4",
+      "description": "Descripción de ejemplo",
+      "price": "1399.00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 5,
+    "fields": {
+      "category": 1,
+      "name": "Producto 5",
+      "description": "Descripción de ejemplo",
+      "price": "1499.00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 6,
+    "fields": {
+      "category": 2,
+      "name": "Producto 6",
+      "description": "Descripción de ejemplo",
+      "price": "1599.00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 7,
+    "fields": {
+      "category": 2,
+      "name": "Producto 7",
+      "description": "Descripción de ejemplo",
+      "price": "1699.00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 8,
+    "fields": {
+      "category": 2,
+      "name": "Producto 8",
+      "description": "Descripción de ejemplo",
+      "price": "1799.00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 9,
+    "fields": {
+      "category": 2,
+      "name": "Producto 9",
+      "description": "Descripción de ejemplo",
+      "price": "1899.00",
+      "is_active": true
+    }
+  }
+]

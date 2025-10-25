@@ -1,0 +1,320 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block hero %}
+<!-- Carousel con mejores efectos visuales -->
+<div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    {% for s in carousel_slides %}
+    {% if forloop.first %}
+    <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
+      class="active"></button>
+    {% else %}
+    <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="{{ forloop.counter0 }}"></button>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="carousel-inner">
+    {% for s in carousel_slides %}
+    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+      <img src="{{ s.image.url }}" class="d-block w-100" alt="{{ s.title }}"
+        style="max-height: 500px; object-fit: cover;">
+      <div class="carousel-caption d-none d-md-block shadow-custom"
+        style="background:rgba(0,0,0,.7);border-radius:.5rem;padding:1.5rem;">
+        {% if s.title %}<h5 class="fw-bold">{{ s.title }}</h5>{% endif %}
+        {% if s.subtitle %}<p class="mb-3">{{ s.subtitle }}</p>{% endif %}
+        {% if s.button_url %}
+        <a href="{{ s.button_url }}" class="btn btn-primary">
+          {{ s.button_text|default:'Ver más' }}
+        </a>
+        {% endif %}
+      </div>
+    </div>
+    {% empty %}
+    <div class="carousel-item active">
+      <svg width="100%" height="420" preserveAspectRatio="none">
+        <rect width="100%" height="100%" fill="#111" />
+      </svg>
+      <div class="carousel-caption d-none d-md-block"
+        style="background:rgba(0,0,0,.7);border-radius:.5rem;padding:1.5rem;">
+        <h5 class="fw-bold">Subí tus slides desde el admin</h5>
+        <p>Ir a /admin/ → Carousel slides</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+<!-- Agregando sección Sobre Nosotros -->
+<section class="py-5 mt-5">
+  <div class="row align-items-center g-4">
+    <div class="col-lg-6">
+      <div class="position-relative">
+        <img src="{% static 'img/about-us.jpg' %}" alt="Sobre Nosotros" class="img-fluid rounded shadow-custom"
+          style="object-fit: cover; width: 100%; height: 400px;">
+        <div class="position-absolute top-0 start-0 w-100 h-100 rounded"
+          style="background: linear-gradient(135deg, rgba(181, 31, 36, 0.3), rgba(0, 0, 0, 0.5));"></div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="ps-lg-4">
+        <h2 class="text-light mb-3 fw-bold">
+          <i class="bi bi-info-circle-fill text-danger me-2"></i>Sobre Nosotros
+        </h2>
+        <p class="text-muted mb-3" style="line-height: 1.8;">
+          En <strong class="text-danger">Rayo Indumentaria</strong> nos dedicamos a ofrecerte las mejores prendas con
+          estilo único y calidad excepcional. Desde nuestros inicios, hemos trabajado para crear una experiencia de
+          compra memorable.
+        </p>
+        <p class="text-muted mb-4" style="line-height: 1.8;">
+          Nuestra pasión es la moda y nuestro compromiso es con vos. Cada prenda que ofrecemos está seleccionada
+          cuidadosamente para que puedas expresar tu personalidad con confianza.
+        </p>
+        <div class="row g-3">
+          <div class="col-6">
+            <div class="card h-100 text-center p-3 shadow-custom">
+              <i class="bi bi-award-fill text-danger" style="font-size: 2.5rem;"></i>
+              <h5 class="mt-2 mb-0 fw-bold">Calidad</h5>
+              <p class="small text-muted mb-0">Premium</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card h-100 text-center p-3 shadow-custom">
+              <i class="bi bi-truck text-danger" style="font-size: 2.5rem;"></i>
+              <h5 class="mt-2 mb-0 fw-bold">Envíos</h5>
+              <p class="small text-muted mb-0">Gratis</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card h-100 text-center p-3 shadow-custom">
+              <i class="bi bi-credit-card text-danger" style="font-size: 2.5rem;"></i>
+              <h5 class="mt-2 mb-0 fw-bold">Pagos</h5>
+              <p class="small text-muted mb-0">Flexibles</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card h-100 text-center p-3 shadow-custom">
+              <i class="bi bi-shield-check text-danger" style="font-size: 2.5rem;"></i>
+              <h5 class="mt-2 mb-0 fw-bold">Compra</h5>
+              <p class="small text-muted mb-0">Segura</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Título con mejor diseño -->
+<div class="d-flex align-items-center justify-content-between mb-4">
+  <h2 class="text-light mb-0">
+    <i class="bi bi-star-fill text-danger"></i> Destacados
+  </h2>
+</div>
+
+<!-- Carrusel de productos destacados -->
+<div id="carouselDestacados" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    {% for p in featured %}
+    {% if forloop.first or forloop.counter0|divisibleby:3 %}
+    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+      <div class="d-flex justify-content-center gap-3">
+        {% endif %}
+
+        <div class="card h-100 shadow-custom fade-in" style="width: 20rem;">
+          {% if p.imagen %}
+          <img src="{{ p.imagen.url }}" class="card-img-top" alt="{{ p.nombre }}"
+            style="height: 300px; object-fit: cover;">
+          {% else %}
+          <img src="{% static 'img/no-image.png' %}" class="card-img-top" alt="{{ p.nombre }}"
+            style="height: 300px; object-fit: cover;">
+          {% endif %}
+          <div class="card-body text-center d-flex flex-column">
+            <h5 class="card-title fw-bold">{{ p.nombre }}</h5>
+            <p class="small text-muted mb-2">{{ p.categoria.nombre }}</p>
+            {% with variante=p.variantes.first %}
+            {% if variante %}
+            <p class="fw-bold text-danger fs-4 mb-3">${{ variante.precio_venta }}</p>
+            {% endif %}
+            {% endwith %}
+            <form method="post" action="/cart/add/{{ p.variantes.first.id }}/" class="mt-auto">
+              {% csrf_token %}
+              <button class="btn btn-outline-danger w-100">
+                <i class="bi bi-cart-plus"></i> Agregar al carrito
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {% if forloop.counter|divisibleby:3 or forloop.last %}
+      </div>
+    </div>
+    {% endif %}
+    {% empty %}
+    <div class="carousel-item active text-center py-5">
+      <i class="bi bi-box-seam" style="font-size: 4rem; color: #666;"></i>
+      <p class="text-muted mt-3">Cargá productos en el admin para verlos aquí.</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if featured %}
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselDestacados" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Anterior</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselDestacados" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Siguiente</span>
+  </button>
+  {% endif %}
+</div>
+
+
+<!-- Agregando sección de Contacto -->
+<section class="py-5 mt-5">
+  <div class="text-center mb-5">
+    <h2 class="text-light fw-bold">
+      <i class="bi bi-envelope-fill text-danger me-2"></i>Contactanos
+    </h2>
+    <p class="text-muted">Estamos para ayudarte. Escribinos y te responderemos a la brevedad.</p>
+  </div>
+
+  <div class="row g-4">
+    <!-- Formulario de contacto -->
+    <div class="col-lg-7">
+      <div class="card p-4 shadow-custom">
+        <form method="post" action="#">
+          {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="nombre" class="form-label text-light">Nombre completo</label>
+              <input type="text" class="form-control" id="nombre" name="nombre" required placeholder="Tu nombre">
+            </div>
+            <div class="col-md-6">
+              <label for="email" class="form-label text-light">Email</label>
+              <input type="email" class="form-control" id="email" name="email" required placeholder="tu@email.com">
+            </div>
+            <div class="col-12">
+              <label for="asunto" class="form-label text-light">Asunto</label>
+              <input type="text" class="form-control" id="asunto" name="asunto" required
+                placeholder="¿En qué podemos ayudarte?">
+            </div>
+            <div class="col-12">
+              <label for="mensaje" class="form-label text-light">Mensaje</label>
+              <textarea class="form-control" id="mensaje" name="mensaje" rows="5" required
+                placeholder="Escribí tu mensaje aquí..."></textarea>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-danger w-100 py-3">
+                <i class="bi bi-send-fill me-2"></i>Enviar Mensaje
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Información de contacto -->
+    <div class="col-lg-5">
+      <div class="card p-4 shadow-custom h-100">
+        <h4 class="text-light mb-4 fw-bold">Información de Contacto</h4>
+
+        <div class="d-flex align-items-start mb-4">
+          <div class="flex-shrink-0">
+            <div class="rounded-circle bg-danger d-flex align-items-center justify-content-center"
+              style="width: 50px; height: 50px;">
+              <i class="bi bi-geo-alt-fill text-white" style="font-size: 1.5rem;"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <h6 class="text-light mb-1 fw-bold">Dirección</h6>
+            <p class="text-muted mb-0">Buenos Aires, Argentina</p>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-start mb-4">
+          <div class="flex-shrink-0">
+            <div class="rounded-circle bg-danger d-flex align-items-center justify-content-center"
+              style="width: 50px; height: 50px;">
+              <i class="bi bi-telephone-fill text-white" style="font-size: 1.5rem;"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <h6 class="text-light mb-1 fw-bold">Teléfono</h6>
+            <p class="text-muted mb-0">+54 11 1234-5678</p>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-start mb-4">
+          <div class="flex-shrink-0">
+            <div class="rounded-circle bg-danger d-flex align-items-center justify-content-center"
+              style="width: 50px; height: 50px;">
+              <i class="bi bi-envelope-fill text-white" style="font-size: 1.5rem;"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <h6 class="text-light mb-1 fw-bold">Email</h6>
+            <p class="text-muted mb-0">info@rayo.com.ar</p>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-start">
+          <div class="flex-shrink-0">
+            <div class="rounded-circle bg-danger d-flex align-items-center justify-content-center"
+              style="width: 50px; height: 50px;">
+              <i class="bi bi-clock-fill text-white" style="font-size: 1.5rem;"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <h6 class="text-light mb-1 fw-bold">Horarios</h6>
+            <p class="text-muted mb-0">Lun - Vie: 9:00 - 18:00</p>
+            <p class="text-muted mb-0">Sáb: 10:00 - 14:00</p>
+          </div>
+        </div>
+
+        <hr class="my-4" style="border-color: #2a2a2a;">
+
+        <div>
+          <h6 class="text-light mb-3 fw-bold">Seguinos en redes</h6>
+          <div class="d-flex gap-2">
+            <a href="#" class="btn btn-outline-danger rounded-circle d-flex align-items-center justify-content-center"
+              style="width: 45px; height: 45px;">
+              <i class="bi bi-instagram"></i>
+            </a>
+            <a href="#" class="btn btn-outline-danger rounded-circle d-flex align-items-center justify-content-center"
+              style="width: 45px; height: 45px;">
+              <i class="bi bi-whatsapp"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const carousel = document.querySelector('#carouselDestacados');
+  if (carousel) {
+    const bsCarousel = new bootstrap.Carousel(carousel, {
+      interval: 3500,
+      ride: 'carousel',
+      pause: 'hover'
+    });
+  }
+</script>
+{% endblock %}

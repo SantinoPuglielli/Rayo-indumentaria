@@ -1,0 +1,112 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+
+{% if cart %}
+<!-- Nuevo diseño con cards en lugar de tabla -->
+<div class="cart-modern-container">
+
+
+  <!-- Items del carrito -->
+  <div class="cart-items-list">
+    {% for i in cart %}
+    <div class="cart-item-card fade-in">
+      <!-- Imagen del producto -->
+      <div class="cart-item-image">
+        {% if i.image %}
+        <img src="{{ i.image }}" alt="{{ i.name }}">
+        {% else %}
+        <div class="cart-item-placeholder">
+          <i class="bi bi-image"></i>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Información del producto -->
+      <div class="cart-item-info">
+        <h5 class="cart-item-name">{{ i.name }}</h5>
+        <p class="cart-item-price">${{ i.price|floatformat:2 }}</p>
+      </div>
+
+      <!-- Controles de cantidad -->
+      <div class="cart-item-controls">
+        <a href="{% url 'cart:remove_one' i.id %}" class="cart-qty-btn" title="Disminuir">−</a>
+        <span class="cart-qty-display">{{ i.qty }}</span>
+        <a href="{% url 'cart:increase' i.id %}" class="cart-qty-btn" title="Aumentar">+</a>
+      </div>
+
+      <!-- Botón eliminar -->
+      <a href="{% url 'cart:remove' i.id %}" class="cart-item-delete" title="Eliminar producto">
+        <i class="bi bi-trash"></i>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Total y botones de acción -->
+  <div class="cart-footer">
+    <div class="cart-total-section">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-amount">${{ total|floatformat:2 }}</span>
+    </div>
+
+    <form id="mp-form" method="post" action="{% url 'payments:mp_create' %}">
+      {% csrf_token %}
+      <button class="cart-confirm-btn">
+        <i class="bi bi-credit-card"></i> Pagar con Mercado Pago
+      </button>
+    </form>
+
+    <a href="{% url 'cart:clear' %}" class="cart-clear-btn">
+      <i class="bi bi-trash"></i> Vaciar carrito
+    </a>
+  </div>
+</div>
+
+<script>
+  // Helper de Django para CSRF
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+  const csrftoken = getCookie('csrftoken');
+
+  document.getElementById('mp-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch(e.target.action, {
+        method: 'POST',
+        headers: { 'X-CSRFToken': csrftoken },
+      });
+
+      const data = await res.json();
+      if (data.init_point) {
+        window.location.href = data.init_point;
+      } else {
+        alert(data.error || 'No se pudo iniciar el pago');
+      }
+    } catch (err) {
+      alert('Error de red al crear la preferencia');
+    }
+  });
+</script>
+
+{% else %}
+<!-- Estado vacío mejorado -->
+<div class="cart-empty-state">
+  <div class="cart-empty-icon">
+    <i class="bi bi-cart-x"></i>
+  </div>
+  <h3 class="cart-empty-title">Tu carrito está vacío</h3>
+  <p class="cart-empty-text">
+    No tienes productos añadidos todavía.<br>
+    ¡Descubre nuestras ofertas y agrega lo que más te guste!
+  </p>
+  <a href="{% url 'catalog:list' %}" class="cart-empty-btn">
+    <i class="bi bi-shop"></i> Ir a comprar
+  </a>
+</div>
+{% endif %}
+{% endblock %}

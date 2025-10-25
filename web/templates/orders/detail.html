@@ -1,0 +1,6 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>Orden #{{ order.id }}</h2>
+<p>Estado: {{ order.get_status_display }}</p>
+<p>Total: ${{ order.total_amount }}</p>
+{% endblock %}

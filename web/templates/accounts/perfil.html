@@ -1,0 +1,217 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  :root {
+    --rayo-red: #b51f24;
+    --rayo-dark: #0a0a0a;
+    --rayo-gray: #1a1a1a;
+    --rayo-border: #2a2a2a;
+  }
+
+  .perfil-container {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .sidebar {
+    width: 220px;
+    background: #141414;
+    border: 1px solid var(--rayo-border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    height: fit-content;
+    box-shadow: 0 0 10px rgba(181, 31, 36, 0.3);
+  }
+
+  .sidebar-title {
+    font-size: 1.2rem;
+    color: var(--rayo-red);
+    text-align: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.5rem;
+  }
+
+  .sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sidebar-menu li {
+    margin: 10px 0;
+  }
+
+  .sidebar-menu a {
+    display: block;
+    text-decoration: none;
+    color: #ccc;
+    padding: 10px;
+    border-radius: 6px;
+    transition: 0.3s;
+  }
+
+  .sidebar-menu a:hover,
+  .sidebar-menu a.active {
+    background: var(--rayo-red);
+    color: #fff;
+  }
+
+  .perfil-content {
+    flex-grow: 1;
+    background: #111;
+    border: 1px solid var(--rayo-border);
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  }
+
+  .perfil-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .perfil-header i {
+    font-size: 4rem;
+    color: var(--rayo-red);
+  }
+
+  .perfil-header h1 {
+    margin-top: 1rem;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin-bottom: 0.3rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    background: #1b1b1b;
+    border: 1px solid var(--rayo-border);
+    color: #fff;
+    border-radius: 6px;
+    padding: 0.7rem;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--rayo-red);
+  }
+
+  .btn-save {
+    background: var(--rayo-red);
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 1rem;
+    font-weight: 600;
+    width: 100%;
+  }
+
+  .btn-save:hover {
+    background: #8a161a;
+  }
+
+  @media (max-width: 768px) {
+    .perfil-container {
+      flex-direction: column;
+    }
+
+    .sidebar {
+      width: 100%;
+    }
+
+    .form-row {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<div class="perfil-container">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2 class="sidebar-title">Mi cuenta</h2>
+    <ul class="sidebar-menu">
+      <li><a href="{% url 'accounts:perfil' %}" class="active"><i class="bi bi-person-circle"></i> Mi perfil</a></li>
+      <li><a href="{% url 'accounts:mis_pedidos' %}"><i class="bi bi-bag-check"></i> Mis pedidos</a></li>
+      <li><a href="{% url 'catalog:favoritos' %}"><i class="bi bi-heart me-2"></i> Favoritos</a></li>
+      <li><a href="#" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a></li>
+    </ul>
+  </aside>
+
+  <!-- CONTENIDO PERFIL -->
+  <section class="perfil-content">
+    <div class="perfil-header">
+      <i class="bi bi-person-circle"></i>
+      <h1>Mi Perfil</h1>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nombre"><i class="bi bi-person"></i> Nombre</label>
+          <input type="text" id="nombre" name="nombre" value="{{ user.first_name }}" required>
+        </div>
+        <div class="form-group">
+          <label for="apellido"><i class="bi bi-person"></i> Apellido</label>
+          <input type="text" id="apellido" name="apellido" value="{{ user.last_name }}" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email"><i class="bi bi-envelope"></i> Correo electrónico</label>
+        <input type="email" id="email" name="email" value="{{ user.email }}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="telefono"><i class="bi bi-telephone"></i> Teléfono</label>
+        <input type="text" id="telefono" name="telefono" value="{{ perfil.telefono }}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="direccion"><i class="bi bi-geo-alt"></i> Dirección</label>
+        <textarea id="direccion" name="direccion" rows="2" required>{{ perfil.direccion }}</textarea>
+      </div>
+
+      <button type="submit" class="btn-save"><i class="bi bi-save"></i> Guardar cambios</button>
+    </form>
+  </section>
+</div>
+{% endblock %}

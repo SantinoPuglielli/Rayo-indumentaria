@@ -1,0 +1,334 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="container my-5">
+    <!-- Header con estilo Rayo -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold mb-3" style="color: #fff;">Envíos y Devoluciones</h1>
+        <div style="width: 80px; height: 3px; background: var(--rayo-red, #b51f24); margin: 0 auto;"></div>
+        <p class="mt-3" style="color: #999;">Información sobre nuestros servicios de entrega y política de devoluciones
+        </p>
+    </div>
+
+    <!-- Tabs de navegación -->
+    <ul class="nav nav-tabs mb-4" id="shippingTabs" role="tablist" style="border-bottom: 2px solid #2a2a2a;">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="envios-tab" data-bs-toggle="tab" data-bs-target="#envios" type="button"
+                role="tab"
+                style="color: #999; border: none; padding: 1rem 2rem; font-weight: 600; background: transparent;">
+                <i class="bi bi-truck me-2"></i>Envíos
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="devoluciones-tab" data-bs-toggle="tab" data-bs-target="#devoluciones"
+                type="button" role="tab"
+                style="color: #999; border: none; padding: 1rem 2rem; font-weight: 600; background: transparent;">
+                <i class="bi bi-arrow-repeat me-2"></i>Devoluciones
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="shippingTabsContent">
+        <!-- Tab Envíos -->
+        <div class="tab-pane fade show active" id="envios" role="tabpanel">
+            <div class="row g-4">
+                <!-- Información principal de envíos -->
+                <div class="col-lg-8">
+                    <div class="card mb-4"
+                        style="background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 0.5rem;">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <div
+                                    style="width: 50px; height: 50px; background: rgba(181, 31, 36, 0.2); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                                    <i class="bi bi-box-seam"
+                                        style="color: var(--rayo-red, #b51f24); font-size: 1.75rem;"></i>
+                                </div>
+                                <div>
+                                    <h4 class="mb-1" style="color: #fff; font-weight: 600;">Proceso de envío</h4>
+                                    <p class="mb-0" style="color: #999; font-size: 0.9rem;">Cómo funciona nuestro
+                                        sistema de entregas</p>
+                                </div>
+                            </div>
+                            <p style="color: #e9e9e9; line-height: 1.8; margin-bottom: 1.5rem;">
+                                Realizamos envíos a todo el país a través de correo certificado. Los pedidos se procesan
+                                dentro de las 24 a 48
+                                horas hábiles posteriores a la confirmación del pago.
+                            </p>
+                            <p style="color: #e9e9e9; line-height: 1.8; margin-bottom: 0;">
+                                Los tiempos de entrega pueden variar según la localidad, con un promedio de 3 a 7 días
+                                hábiles. Recibirás un
+                                número de seguimiento por correo electrónico para monitorear tu envío.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Timeline de envío -->
+                    <div class="card" style="background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 0.5rem;">
+                        <div class="card-body p-4">
+                            <h5 class="mb-4" style="color: #fff; font-weight: 600;">
+                                <i class="bi bi-clock-history me-2" style="color: var(--rayo-red, #b51f24);"></i>
+                                Línea de tiempo del envío
+                            </h5>
+                            <div class="timeline">
+                                <!-- Paso 1 -->
+                                <div class="d-flex mb-4">
+                                    <div
+                                        style="width: 40px; height: 40px; background: var(--rayo-red, #b51f24); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; flex-shrink: 0;">
+                                        <span style="color: #fff; font-weight: 700;">1</span>
+                                    </div>
+                                    <div>
+                                        <h6 style="color: #fff; margin-bottom: 0.5rem;">Confirmación de pago</h6>
+                                        <p style="color: #999; margin-bottom: 0; font-size: 0.9rem;">Verificamos tu pago
+                                            y preparamos el pedido</p>
+                                    </div>
+                                </div>
+                                <!-- Paso 2 -->
+                                <div class="d-flex mb-4">
+                                    <div
+                                        style="width: 40px; height: 40px; background: var(--rayo-red, #b51f24); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; flex-shrink: 0;">
+                                        <span style="color: #fff; font-weight: 700;">2</span>
+                                    </div>
+                                    <div>
+                                        <h6 style="color: #fff; margin-bottom: 0.5rem;">Preparación (24-48hs)</h6>
+                                        <p style="color: #999; margin-bottom: 0; font-size: 0.9rem;">Empaquetamos tu
+                                            pedido con cuidado</p>
+                                    </div>
+                                </div>
+                                <!-- Paso 3 -->
+                                <div class="d-flex mb-4">
+                                    <div
+                                        style="width: 40px; height: 40px; background: var(--rayo-red, #b51f24); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; flex-shrink: 0;">
+                                        <span style="color: #fff; font-weight: 700;">3</span>
+                                    </div>
+                                    <div>
+                                        <h6 style="color: #fff; margin-bottom: 0.5rem;">Envío en camino</h6>
+                                        <p style="color: #999; margin-bottom: 0; font-size: 0.9rem;">Recibís el código
+                                            de seguimiento por email</p>
+                                    </div>
+                                </div>
+                                <!-- Paso 4 -->
+                                <div class="d-flex">
+                                    <div
+                                        style="width: 40px; height: 40px; background: var(--rayo-red, #b51f24); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; flex-shrink: 0;">
+                                        <span style="color: #fff; font-weight: 700;">4</span>
+                                    </div>
+                                    <div>
+                                        <h6 style="color: #fff; margin-bottom: 0.5rem;">Entrega (3-7 días)</h6>
+                                        <p style="color: #999; margin-bottom: 0; font-size: 0.9rem;">Tu pedido llega a
+                                            destino</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar con información adicional -->
+                <div class="col-lg-4">
+                    <!-- Costos de envío -->
+                    <div class="card mb-4"
+                        style="background: rgba(181, 31, 36, 0.1); border: 1px solid var(--rayo-red, #b51f24); border-radius: 0.5rem;">
+                        <div class="card-body p-4">
+                            <h5 class="mb-3" style="color: #fff; font-weight: 600;">
+                                <i class="bi bi-cash-coin me-2" style="color: var(--rayo-red, #b51f24);"></i>
+                                Costos de envío
+                            </h5>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span style="color: #e9e9e9;">CABA</span>
+                                    <strong style="color: var(--rayo-red, #b51f24);">$2.500</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span style="color: #e9e9e9;">GBA</span>
+                                    <strong style="color: var(--rayo-red, #b51f24);">$3.000</strong>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span style="color: #e9e9e9;">Interior</span>
+                                    <strong style="color: var(--rayo-red, #b51f24);">$3.500</strong>
+                                </div>
+                            </div>
+                            <div class="alert mb-0"
+                                style="background: rgba(181, 31, 36, 0.2); border: 1px solid var(--rayo-red, #b51f24); color: #e9e9e9; padding: 0.75rem; border-radius: 0.375rem;">
+                                <i class="bi bi-gift me-2"></i>
+                                <strong>Envío gratis</strong> en compras superiores a $50.000
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seguimiento -->
+                    <div class="card" style="background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 0.5rem;">
+                        <div class="card-body p-4">
+                            <h5 class="mb-3" style="color: #fff; font-weight: 600;">
+                                <i class="bi bi-geo-alt me-2" style="color: var(--rayo-red, #b51f24);"></i>
+                                Seguimiento
+                            </h5>
+                            <p style="color: #e9e9e9; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
+                                Rastreá tu pedido en tiempo real con el código que te enviamos por email.
+                            </p>
+                            <a href="#" class="btn btn-danger w-100"
+                                style="background: var(--rayo-red, #b51f24); border: none; padding: 0.75rem; font-weight: 600;">
+                                <i class="bi bi-search me-2"></i>Rastrear pedido
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Devoluciones -->
+        <div class="tab-pane fade" id="devoluciones" role="tabpanel">
+            <div class="row g-4">
+                <!-- Información de devoluciones -->
+                <div class="col-lg-8">
+                    <div class="card mb-4"
+                        style="background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 0.5rem;">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <div
+                                    style="width: 50px; height: 50px; background: rgba(181, 31, 36, 0.2); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                                    <i class="bi bi-arrow-left-right"
+                                        style="color: var(--rayo-red, #b51f24); font-size: 1.75rem;"></i>
+                                </div>
+                                <div>
+                                    <h4 class="mb-1" style="color: #fff; font-weight: 600;">Política de devoluciones
+                                    </h4>
+                                    <p class="mb-0" style="color: #999; font-size: 0.9rem;">Tu satisfacción es nuestra
+                                        prioridad</p>
+                                </div>
+                            </div>
+                            <p style="color: #e9e9e9; line-height: 1.8; margin-bottom: 1.5rem;">
+                                Si el producto recibido no cumple con tus expectativas o presenta defectos, podés
+                                solicitar una devolución
+                                dentro de los <strong style="color: var(--rayo-red, #b51f24);">10 días hábiles</strong>
+                                desde la recepción.
+                            </p>
+                            <p style="color: #e9e9e9; line-height: 1.8; margin-bottom: 0;">
+                                El producto debe encontrarse en perfectas condiciones, sin uso y con su empaque
+                                original. Los costos de envío
+                                por devoluciones corren por cuenta del comprador, salvo que se trate de un error o
+                                defecto de fábrica.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Condiciones -->
+                    <div class="card" style="background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 0.5rem;">
+                        <div class="card-body p-4">
+                            <h5 class="mb-4" style="color: #fff; font-weight: 600;">
+                                <i class="bi bi-check-circle me-2" style="color: var(--rayo-red, #b51f24);"></i>
+                                Condiciones para devoluciones
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start">
+                                        <i class="bi bi-check2 me-2"
+                                            style="color: var(--rayo-red, #b51f24); font-size: 1.25rem; margin-top: 2px;"></i>
+                                        <div>
+                                            <h6 style="color: #fff; margin-bottom: 0.25rem;">Producto sin uso</h6>
+                                            <p style="color: #999; font-size: 0.875rem; margin-bottom: 0;">Con etiquetas
+                                                originales</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start">
+                                        <i class="bi bi-check2 me-2"
+                                            style="color: var(--rayo-red, #b51f24); font-size: 1.25rem; margin-top: 2px;"></i>
+                                        <div>
+                                            <h6 style="color: #fff; margin-bottom: 0.25rem;">Empaque original</h6>
+                                            <p style="color: #999; font-size: 0.875rem; margin-bottom: 0;">En perfectas
+                                                condiciones</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start">
+                                        <i class="bi bi-check2 me-2"
+                                            style="color: var(--rayo-red, #b51f24); font-size: 1.25rem; margin-top: 2px;"></i>
+                                        <div>
+                                            <h6 style="color: #fff; margin-bottom: 0.25rem;">Dentro del plazo</h6>
+                                            <p style="color: #999; font-size: 0.875rem; margin-bottom: 0;">10 días
+                                                hábiles</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start">
+                                        <i class="bi bi-check2 me-2"
+                                            style="color: var(--rayo-red, #b51f24); font-size: 1.25rem; margin-top: 2px;"></i>
+                                        <div>
+                                            <h6 style="color: #fff; margin-bottom: 0.25rem;">Comprobante</h6>
+                                            <p style="color: #999; font-size: 0.875rem; margin-bottom: 0;">Factura o
+                                                ticket de compra</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar con proceso -->
+                <div class="col-lg-4">
+                    <div class="card"
+                        style="background: rgba(181, 31, 36, 0.1); border: 1px solid var(--rayo-red, #b51f24); border-radius: 0.5rem;">
+                        <div class="card-body p-4">
+                            <h5 class="mb-4" style="color: #fff; font-weight: 600;">
+                                <i class="bi bi-list-check me-2" style="color: var(--rayo-red, #b51f24);"></i>
+                                Cómo solicitar
+                            </h5>
+                            <ol style="color: #e9e9e9; padding-left: 1.25rem; line-height: 2;">
+                                <li>Contactanos por email o WhatsApp</li>
+                                <li>Indicá tu número de pedido</li>
+                                <li>Explicá el motivo de la devolución</li>
+                                <li>Enviá el producto según indicaciones</li>
+                                <li>Recibí tu reembolso o cambio</li>
+                            </ol>
+                            <div class="mt-4 pt-3" style="border-top: 1px solid rgba(181, 31, 36, 0.3);">
+                                <p style="color: #999; font-size: 0.875rem; margin-bottom: 1rem;">¿Necesitás ayuda?</p>
+                                <a href="mailto:contacto@rayoindumentaria.com" class="btn btn-danger w-100 mb-2"
+                                    style="background: var(--rayo-red, #b51f24); border: none; padding: 0.75rem; font-weight: 600; font-size: 0.9rem;">
+                                    <i class="bi bi-envelope me-2"></i>Email
+                                </a>
+                                <a href="https://wa.me/541121686237" class="btn btn-outline-light w-100"
+                                    style="border-color: var(--rayo-red, #b51f24); color: var(--rayo-red, #b51f24); padding: 0.75rem; font-weight: 600; font-size: 0.9rem;">
+                                    <i class="bi bi-whatsapp me-2"></i>WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .nav-tabs .nav-link.active {
+        color: var(--rayo-red, #b51f24) !important;
+        border-bottom: 3px solid var(--rayo-red, #b51f24) !important;
+        background: transparent !important;
+    }
+
+    .nav-tabs .nav-link:hover {
+        color: var(--rayo-red, #b51f24) !important;
+    }
+
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(181, 31, 36, 0.3);
+        border-color: var(--rayo-red, #b51f24) !important;
+    }
+
+    .btn-danger:hover {
+        background: #8a1519 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(181, 31, 36, 0.4);
+    }
+
+    .btn-outline-light:hover {
+        background: var(--rayo-red, #b51f24) !important;
+        border-color: var(--rayo-red, #b51f24) !important;
+        color: #fff !important;
+    }
+</style>
+{% endblock %}

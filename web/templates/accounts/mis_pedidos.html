@@ -1,0 +1,238 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  :root {
+    --rayo-red: #b51f24;
+    --rayo-dark: #0a0a0a;
+    --rayo-gray: #1a1a1a;
+    --rayo-border: #2a2a2a;
+  }
+
+  .perfil-container {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .sidebar {
+    width: 220px;
+    background: #141414;
+    border: 1px solid var(--rayo-border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    height: fit-content;
+    box-shadow: 0 0 10px rgba(181, 31, 36, 0.3);
+  }
+
+  .sidebar-title {
+    font-size: 1.2rem;
+    color: var(--rayo-red);
+    text-align: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.5rem;
+  }
+
+  .sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sidebar-menu li {
+    margin: 10px 0;
+  }
+
+  .sidebar-menu a {
+    display: block;
+    text-decoration: none;
+    color: #ccc;
+    padding: 10px;
+    border-radius: 6px;
+    transition: 0.3s;
+  }
+
+  .sidebar-menu a:hover,
+  .sidebar-menu a.active {
+    background: var(--rayo-red);
+    color: #fff;
+  }
+
+  .perfil-content {
+    flex-grow: 1;
+    background: #111;
+    border: 1px solid var(--rayo-border);
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  }
+
+  .perfil-content h1 {
+    color: var(--rayo-red);
+    margin-bottom: 1.5rem;
+  }
+
+  .pedidos-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1a1a1a;
+    color: #fff;
+    border: 1px solid var(--rayo-border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .pedidos-table th,
+  .pedidos-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--rayo-border);
+  }
+
+  .pedidos-table th {
+    background-color: #111;
+    color: #ffcccc;
+    font-weight: 600;
+  }
+
+  .pedidos-table tr:hover {
+    background-color: #181818;
+  }
+
+  .badge {
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .badge-success {
+    background: #1fa851;
+    color: #fff;
+  }
+
+  .badge-warning {
+    background: #ffcc00;
+    color: #000;
+  }
+
+  .badge-secondary {
+    background: #444;
+    color: #fff;
+  }
+
+  .badge-info {
+    background: #17a2b8;
+    color: #fff;
+  }
+
+  .btn-ver {
+    display: inline-block;
+    padding: 8px 12px;
+    background: transparent;
+    color: var(--rayo-red);
+    border: 1px solid var(--rayo-red);
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+
+  .btn-ver:hover {
+    background: var(--rayo-red);
+    color: #fff;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #999;
+  }
+
+  .empty-state i {
+    font-size: 4rem;
+    color: var(--rayo-red);
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .perfil-container {
+      flex-direction: column;
+    }
+
+    .sidebar {
+      width: 100%;
+    }
+
+    .pedidos-table {
+      font-size: 0.9rem;
+    }
+  }
+</style>
+
+<div class="perfil-container">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2 class="sidebar-title">Mi cuenta</h2>
+    <ul class="sidebar-menu">
+      <li><a href="{% url 'accounts:perfil' %}"><i class="bi bi-person-circle"></i> Mi perfil</a></li>
+      <li><a href="{% url 'accounts:mis_pedidos' %}" class="active"><i class="bi bi-bag-check"></i> Mis pedidos</a></li>
+      <li><a href="{% url 'catalog:favoritos' %}"><i class="bi bi-heart me-2"></i> Favoritos</a></li>
+      <li><a href="#" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a></li>
+    </ul>
+  </aside>
+
+  <!-- CONTENIDO PEDIDOS -->
+  <section class="perfil-content">
+    <h1><i class="bi bi-bag-check"></i> Mis pedidos</h1>
+
+    {% if pedidos %}
+      <table class="pedidos-table">
+        <thead>
+          <tr>
+            <th># Pedido</th>
+            <th>Fecha</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pedido in pedidos %}
+          <tr>
+            <td>{{ pedido.id|stringformat:"04d" }}</td>
+            <td>{{ pedido.fecha_creacion|date:"d/m/Y" }}</td>
+            <td>${{ pedido.total|floatformat:2 }}</td>
+            <td>
+              {% if pedido.estado == 'entregado' %}
+                <span class="badge badge-success">Entregado</span>
+              {% elif pedido.estado == 'pendiente' %}
+                <span class="badge badge-warning">Pendiente</span>
+              {% elif pedido.estado == 'cancelado' %}
+                <span class="badge badge-secondary">Cancelado</span>
+              {% else %}
+                <span class="badge badge-info">{{ pedido.estado|title }}</span>
+              {% endif %}
+            </td>
+            <td>
+              <a href="{% url 'orders:detalle_pedido' pedido.id %}" class="btn-ver">Ver</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty-state">
+        <i class="bi bi-bag-x"></i>
+        <h3>No tienes pedidos aún</h3>
+        <p>Cuando realices tu primera compra, aparecerá aquí.</p>
+        <a href="{% url 'catalog:list' %}" class="btn-ver" style="margin-top: 1rem;">Ver productos</a>
+      </div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

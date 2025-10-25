@@ -1,0 +1,13 @@
+Para poder correr el sistema abrir la ruta de la carpeta en cmd y pegar estos comandos(pueden ser pegados todos a la vez):
+python -m venv entorno
+cd entorno
+cd scripts
+activate
+cd..
+cd..
+cd web
+pip install -r requirements.txt
+python manage.py runserver
+
+Usuario para el admin: hector
+Contraseña:1234

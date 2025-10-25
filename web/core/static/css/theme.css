@@ -1,0 +1,1316 @@
+:root {
+  --rayo-red: #b51f24;
+  --rayo-dark: #0f0f0f;
+}
+
+body {
+  background: var(--rayo-dark);
+  color: #e9e9e9;
+}
+
+.navbar {
+  background: #000;
+}
+
+.btn-primary,
+.btn-mp {
+  background: var(--rayo-red);
+  border: 1px solid var(--rayo-red);
+  color: #fff;
+}
+
+.card {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  color: #e9e9e9;
+}
+
+.search input {
+  background: #222;
+  border: 1px solid #333;
+  color: #eee;
+}
+
+a {
+  color: #ff4d4f;
+}
+
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: .5rem;
+  padding: 1rem;
+}
+
+.color-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #555;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* Oculta la barra de búsqueda solo en la página de perfil */
+body:has(main.container:has(form[action*="perfil"])) .search {
+  display: none !important;
+}
+
+.btn-outline-light.rounded-circle {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-color: var(--rayo-red);
+  color: var(--rayo-red);
+  transition: 0.3s ease;
+}
+
+.btn-outline-light.rounded-circle:hover {
+  background-color: var(--rayo-red);
+  color: #fff;
+}
+
+/* Estilos para el offcanvas del carrito */
+.cart-offcanvas {
+  background: var(--rayo-dark);
+  color: #e9e9e9;
+  width: 420px !important;
+  max-width: 90vw;
+  box-shadow: -4px 0 20px rgba(181, 31, 36, 0.3);
+}
+
+.cart-offcanvas .offcanvas-header {
+  background: #000;
+  padding: 1.25rem 1.5rem;
+}
+
+.cart-offcanvas .offcanvas-title {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.cart-offcanvas .offcanvas-body {
+  padding: 0;
+}
+
+/* Estilos para los items del carrito en el offcanvas */
+#cart-content .table {
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+#cart-content .table td,
+#cart-content .table th {
+  padding: 0.75rem 0.5rem;
+  vertical-align: middle;
+}
+
+#cart-content h2 {
+  font-size: 1.1rem;
+  padding: 1rem 0 0.5rem;
+  margin: 0;
+}
+
+/* Mejorar botones en el carrito lateral */
+#cart-content .btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+#cart-content .d-flex.gap-3 {
+  padding: 1rem;
+  background: #1a1a1a;
+  border-top: 1px solid #2a2a2a;
+  position: sticky;
+  bottom: 0;
+}
+
+#cart-content .text-end {
+  padding: 1rem;
+  background: #1a1a1a;
+  border-top: 1px solid #2a2a2a;
+  border-bottom: 1px solid #2a2a2a;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Animación suave para el offcanvas */
+.offcanvas.offcanvas-end {
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Scroll personalizado para el contenido del carrito */
+#cart-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+#cart-content::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+#cart-content::-webkit-scrollbar-thumb {
+  background: var(--rayo-red);
+  border-radius: 4px;
+}
+
+#cart-content::-webkit-scrollbar-thumb:hover {
+  background: #8a1519;
+}
+
+/* Mejorar la apariencia de la tabla en el offcanvas */
+#cart-content .table-dark {
+  --bs-table-bg: transparent;
+}
+
+#cart-content .table-striped>tbody>tr:nth-of-type(odd)>* {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Ajustar espaciado del contenido vacío */
+#cart-content p.text-center {
+  padding: 3rem 1rem;
+  margin: 0;
+}
+
+/* Agregando detalles estéticos profesionales para cards, hover effects y transiciones */
+
+/* Mejoras para las cards de productos */
+.card {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  color: #e9e9e9;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(181, 31, 36, 0.3);
+  border-color: var(--rayo-red);
+}
+
+.card img {
+  transition: transform 0.3s ease;
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
+/* Mejoras para botones */
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover,
+.btn-mp:hover {
+  background: #8a1519;
+  border-color: #8a1519;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(181, 31, 36, 0.4);
+}
+
+.btn-outline-danger {
+  border-color: var(--rayo-red);
+  color: var(--rayo-red);
+  transition: all 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+  background: var(--rayo-red);
+  border-color: var(--rayo-red);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(181, 31, 36, 0.4);
+}
+
+.btn-danger {
+  background: var(--rayo-red);
+  border-color: var(--rayo-red);
+  transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+  background: #8a1519;
+  border-color: #8a1519;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(181, 31, 36, 0.4);
+}
+
+/* Mejoras para el navbar */
+.navbar {
+  background: #000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.nav-link {
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--rayo-red);
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Mejoras para el carousel */
+.carousel-item img {
+  filter: brightness(0.85);
+  transition: filter 0.3s ease;
+}
+
+.carousel-item:hover img {
+  filter: brightness(1);
+}
+
+/* Mejoras para inputs y forms */
+.form-control,
+.form-select {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  color: #e9e9e9;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background: #1a1a1a;
+  border-color: var(--rayo-red);
+  color: #e9e9e9;
+  box-shadow: 0 0 0 0.25rem rgba(181, 31, 36, 0.25);
+}
+
+/* Mejoras para dropdowns */
+.dropdown-menu {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.dropdown-item {
+  color: #e9e9e9;
+  transition: background-color 0.2s ease, padding-left 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(181, 31, 36, 0.2);
+  color: #fff;
+  padding-left: 1.5rem;
+}
+
+/* Mejoras para badges */
+.badge {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Mejoras para imágenes de productos */
+.card-img-top {
+  overflow: hidden;
+  border-radius: 0.375rem 0.375rem 0 0;
+}
+
+/* Sombras sutiles para elementos importantes */
+.shadow-custom {
+  box-shadow: 0 4px 15px rgba(181, 31, 36, 0.2);
+}
+
+/* Animación para elementos que aparecen */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mejoras para la tabla del carrito en página completa */
+.table-dark {
+  background: #1a1a1a;
+}
+
+.table-dark thead th {
+  background: #000;
+  border-color: #2a2a2a;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd)>* {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* Mejoras para botones de cantidad */
+.btn-outline-light {
+  border-color: #2a2a2a;
+  color: #e9e9e9;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-light:hover {
+  background: var(--rayo-red);
+  border-color: var(--rayo-red);
+  color: #fff;
+}
+
+/* Mejoras para el filtro lateral */
+.card.p-3 {
+  position: sticky;
+  top: 20px;
+}
+
+.form-check-input {
+  background-color: #1a1a1a;
+  border-color: #2a2a2a;
+  transition: all 0.2s ease;
+}
+
+.form-check-input:checked {
+  background-color: var(--rayo-red);
+  border-color: var(--rayo-red);
+}
+
+.form-check-input:focus {
+  border-color: var(--rayo-red);
+  box-shadow: 0 0 0 0.25rem rgba(181, 31, 36, 0.25);
+}
+
+/* Mejoras para paginación */
+.pagination .page-link {
+  background: #1a1a1a;
+  border-color: #2a2a2a;
+  color: #e9e9e9;
+  transition: all 0.2s ease;
+}
+
+.pagination .page-link:hover {
+  background: var(--rayo-red);
+  border-color: var(--rayo-red);
+  color: #fff;
+}
+
+.pagination .page-item.disabled .page-link {
+  background: #0f0f0f;
+  border-color: #2a2a2a;
+  color: #666;
+}
+
+/* Estilos modernos para el carrito tipo card */
+
+/* Contenedor principal del carrito */
+.cart-modern-container {
+  max-width: 100%;
+  padding: 0;
+}
+
+.cart-modern-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  padding: 1.5rem;
+  margin: 0;
+  background: #000;
+  border-bottom: 2px solid var(--rayo-red);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Lista de items del carrito */
+.cart-items-list {
+  padding: 1rem;
+  max-height: calc(100vh - 350px);
+  overflow-y: auto;
+}
+
+/* Card individual de producto */
+.cart-item-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.cart-item-card:hover {
+  border-color: var(--rayo-red);
+  box-shadow: 0 4px 15px rgba(181, 31, 36, 0.2);
+}
+
+/* Imagen del producto */
+.cart-item-image {
+  width: 70px;
+  height: 70px;
+  flex-shrink: 0;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  background: #0f0f0f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cart-item-placeholder {
+  color: #666;
+  font-size: 2rem;
+}
+
+/* Información del producto */
+.cart-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-item-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 0.25rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cart-item-price {
+  font-size: 0.875rem;
+  color: #999;
+  margin: 0;
+}
+
+/* Controles de cantidad */
+.cart-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.cart-qty-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f0f0f;
+  border: 1px solid #2a2a2a;
+  border-radius: 0.25rem;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.25rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.cart-qty-btn:hover {
+  background: var(--rayo-red);
+  border-color: var(--rayo-red);
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.cart-qty-display {
+  min-width: 30px;
+  text-align: center;
+  font-weight: 600;
+  color: #fff;
+  font-size: 1rem;
+}
+
+/* Botón eliminar */
+.cart-item-delete {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  border-radius: 0.25rem;
+  color: var(--rayo-red);
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cart-item-delete:hover {
+  background: var(--rayo-red);
+  border-color: var(--rayo-red);
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* Footer del carrito */
+.cart-footer {
+  padding: 1.5rem;
+  background: #000;
+  border-top: 1px solid #2a2a2a;
+  position: sticky;
+  bottom: 0;
+}
+
+.cart-total-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.cart-total-label {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.cart-total-amount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--rayo-red);
+}
+
+/* Botón confirmar */
+.cart-confirm-btn {
+  width: 100%;
+  padding: 1rem;
+  background: var(--rayo-red);
+  border: none;
+  border-radius: 0.5rem;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.cart-confirm-btn:hover {
+  background: #8a1519;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(181, 31, 36, 0.4);
+}
+
+/* Botón vaciar carrito */
+.cart-clear-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  border-radius: 0.5rem;
+  color: #999;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.cart-clear-btn:hover {
+  background: rgba(181, 31, 36, 0.1);
+  border-color: var(--rayo-red);
+  color: var(--rayo-red);
+}
+
+/* Estado vacío del carrito */
+.cart-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  min-height: 60vh;
+}
+
+.cart-empty-icon {
+  font-size: 6rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.cart-empty-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.75rem;
+}
+
+.cart-empty-text {
+  font-size: 1rem;
+  color: #999;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.cart-empty-btn {
+  padding: 0.875rem 2rem;
+  background: var(--rayo-red);
+  border: none;
+  border-radius: 0.5rem;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cart-empty-btn:hover {
+  background: #8a1519;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(181, 31, 36, 0.4);
+  color: #fff;
+}
+
+/* Responsive para móviles */
+@media (max-width: 576px) {
+  .cart-item-card {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .cart-item-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .cart-item-info {
+    flex: 1 1 calc(100% - 80px);
+  }
+
+  .cart-item-controls {
+    order: 4;
+    flex: 1 1 auto;
+  }
+
+  .cart-item-delete {
+    order: 3;
+  }
+
+  .cart-modern-title {
+    font-size: 1.25rem;
+    padding: 1rem;
+  }
+
+  .cart-total-amount {
+    font-size: 1.25rem;
+  }
+}
+
+/* Ajustes para el offcanvas */
+.cart-offcanvas .cart-modern-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-offcanvas .cart-items-list {
+  flex: 1;
+  overflow-y: auto;
+  max-height: none;
+}
+
+.cart-offcanvas .cart-footer {
+  margin-top: auto;
+}
+
+/* Scroll personalizado para la lista de items */
+.cart-items-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cart-items-list::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+
+.cart-items-list::-webkit-scrollbar-thumb {
+  background: var(--rayo-red);
+  border-radius: 4px;
+}
+
+.cart-items-list::-webkit-scrollbar-thumb:hover {
+  background: #8a1519;
+}
+
+/* ============================================
+   FOOTER STYLES
+   ============================================ */
+
+/* Footer principal */
+.footer-main {
+  background: #000;
+  color: #e9e9e9;
+  margin-top: 4rem;
+  border-top: 2px solid var(--rayo-red);
+}
+
+/* Marca del footer */
+.footer-brand {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+/* Descripción del footer */
+.footer-description {
+  color: #999;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Títulos de secciones del footer */
+.footer-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+
+.footer-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: var(--rayo-red);
+}
+
+/* Enlaces del footer */
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.75rem;
+}
+
+.footer-links a {
+  color: #999;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+  position: relative;
+}
+
+.footer-links a::before {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--rayo-red);
+  transition: width 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--rayo-red);
+  padding-left: 8px;
+}
+
+.footer-links a:hover::before {
+  width: 100%;
+}
+
+/* Información de contacto */
+.footer-contact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-contact li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  color: #999;
+  font-size: 0.95rem;
+}
+
+.footer-contact i {
+  color: var(--rayo-red);
+  font-size: 1.1rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.footer-contact span {
+  line-height: 1.5;
+}
+
+/* Redes sociales */
+.footer-social {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer-social-link {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 0.375rem;
+  color: #e9e9e9;
+  text-decoration: none;
+  font-size: 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.footer-social-link:hover {
+  background: var(--rayo-red);
+  border-color: var(--rayo-red);
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(181, 31, 36, 0.4);
+}
+
+/* Footer bottom - copyright y métodos de pago */
+.footer-bottom {
+  background: #0a0a0a;
+  padding: 1.5rem 0;
+  border-top: 1px solid #1a1a1a;
+  margin-top: 2rem;
+}
+
+.footer-copyright {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.footer-payment {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.footer-payment i {
+  font-size: 1.5rem;
+  color: #999;
+  transition: color 0.3s ease;
+}
+
+.footer-payment i:hover {
+  color: var(--rayo-red);
+}
+
+/* Responsive para footer */
+@media (max-width: 768px) {
+  .footer-main {
+    margin-top: 3rem;
+  }
+
+  .footer-brand {
+    font-size: 1.75rem;
+  }
+
+  .footer-title {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+
+  .footer-social {
+    justify-content: center;
+  }
+
+  .footer-bottom {
+    text-align: center;
+  }
+
+  .footer-payment {
+    justify-content: center;
+  }
+
+  .footer-copyright {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .footer-main .row>div {
+    margin-bottom: 2rem;
+  }
+
+  .footer-main .row>div:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* ============================================
+   ESTILOS PARA SELECCIÓN DE VARIANTES
+   ============================================ */
+
+/* Contenedor de colores */
+.color-selector-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* Botón de color */
+.color-option {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 3px solid #2a2a2a;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 0;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.color-option:hover:not(:disabled) {
+  transform: scale(1.1);
+  border-color: var(--rayo-red);
+  box-shadow: 0 4px 12px rgba(181, 31, 36, 0.4);
+}
+
+.color-option.color-selected {
+  border-color: var(--rayo-red);
+  border-width: 4px;
+  box-shadow: 0 0 0 3px rgba(181, 31, 36, 0.3);
+}
+
+.color-option.color-sin-stock {
+  opacity: 0.3;
+  cursor: not-allowed;
+  position: relative;
+}
+
+.color-option.color-sin-stock::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: #666;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+/* Check mark para color seleccionado */
+.color-check {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+}
+
+.color-option.color-selected .color-check {
+  opacity: 1;
+}
+
+/* Contenedor de talles */
+.talle-selector-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* Botón de talle */
+.talle-option {
+  min-width: 60px;
+  height: 60px;
+  padding: 0.5rem 1rem;
+  background: #1a1a1a;
+  border: 2px solid #2a2a2a;
+  border-radius: 0.5rem;
+  color: #666;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+/* Talle disponible (con stock) */
+.talle-option.talle-disponible {
+  color: #e9e9e9;
+  border-color: #444;
+  background: #1a1a1a;
+}
+
+.talle-option.talle-disponible:hover {
+  border-color: var(--rayo-red);
+  background: rgba(181, 31, 36, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(181, 31, 36, 0.3);
+}
+
+/* Talle seleccionado */
+.talle-option.talle-selected {
+  background: var(--rayo-red);
+  border-color: var(--rayo-red);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(181, 31, 36, 0.4);
+}
+
+/* Talle sin stock */
+.talle-option.talle-sin-stock {
+  color: #444;
+  border-color: #2a2a2a;
+  background: #0f0f0f;
+  cursor: not-allowed;
+  position: relative;
+  opacity: 0.5;
+}
+
+.talle-option.talle-sin-stock::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: #444;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+/* Botón agregar al carrito deshabilitado */
+.btn-add-cart-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: #666 !important;
+  border-color: #666 !important;
+  transition: all 0.3s ease;
+}
+
+.btn-add-cart-disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Animación cuando el botón se habilita */
+.btn-danger:not(.btn-add-cart-disabled) {
+  animation: btnEnable 0.3s ease;
+}
+
+@keyframes btnEnable {
+  0% {
+    opacity: 0.4;
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive para móviles */
+@media (max-width: 576px) {
+  .color-option {
+    width: 45px;
+    height: 45px;
+  }
+
+  .talle-option {
+    min-width: 55px;
+    height: 55px;
+    font-size: 0.9rem;
+  }
+
+  .color-selector-grid,
+  .talle-selector-grid {
+    gap: 0.5rem;
+  }
+}
+
+/* Corrección para colores no reconocidos */
+.color-option {
+  border: 2px solid #2a2a2a;
+}
+
+.color-option:hover {
+  transform: scale(1.15);
+  border-color: var(--rayo-red);
+  box-shadow: 0 0 10px var(--rayo-red);
+}
+
+
+/* Estilos adicionales para el carrusel de productos */
+
+/* Mejoras visuales para el carrusel */
+.carousel-control-prev,
+.carousel-control-next {
+  width: 50px;
+  height: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(181, 31, 36, 0.8);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#productCarousel:hover .carousel-control-prev,
+#productCarousel:hover .carousel-control-next {
+  opacity: 1;
+}
+
+.carousel-control-prev {
+  left: 15px;
+}
+
+.carousel-control-next {
+  right: 15px;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  background-color: rgba(181, 31, 36, 1);
+}
+
+/* Indicadores del carrusel */
+.carousel-indicators {
+  bottom: 15px;
+}
+
+.carousel-indicators button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 2px solid #b51f24;
+  transition: all 0.3s ease;
+}
+
+.carousel-indicators button.active {
+  background-color: #b51f24;
+  transform: scale(1.2);
+}
+
+/* Contenedor de miniaturas */
+#thumbnails-container {
+  scrollbar-width: thin;
+  scrollbar-color: #b51f24 #1a1a1a;
+}
+
+#thumbnails-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+#thumbnails-container::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-radius: 4px;
+}
+
+#thumbnails-container::-webkit-scrollbar-thumb {
+  background: #b51f24;
+  border-radius: 4px;
+}
+
+#thumbnails-container::-webkit-scrollbar-thumb:hover {
+  background: #8b1519;
+}
+
+/* Animación de transición del carrusel */
+.carousel-item {
+  transition: transform 0.6s ease-in-out;
+}
+
+/* Efecto hover en miniaturas */
+.thumbnail img {
+  transition: all 0.3s ease;
+}
+
+.thumbnail img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(181, 31, 36, 0.5);
+}

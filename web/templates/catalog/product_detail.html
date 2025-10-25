@@ -1,0 +1,574 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Layout mejorado con mejor espaciado y efectos visuales -->
+<div class="row g-5 align-items-start fade-in">
+  <!-- Columna de imágenes con carrusel -->
+  <div class="col-md-6">
+    <div id="productCarousel" class="carousel slide shadow-custom" data-bs-ride="false"
+      style="border-radius: 0.5rem; overflow: hidden;">
+      <div class="carousel-inner" id="carousel-inner">
+        <!-- Las imágenes se cargarán dinámicamente con JavaScript -->
+        {% if producto.imagen %}
+        <div class="carousel-item active">
+          <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="d-block w-100"
+            style="height: 500px; object-fit: cover; border: 3px solid #b51f24;">
+        </div>
+        {% else %}
+        <div class="carousel-item active">
+          <img src="{% static 'img/placeholder.png' %}" alt="Sin imagen" class="d-block w-100"
+            style="height: 500px; object-fit: cover; border: 3px solid #b51f24;">
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Controles del carrusel -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+      </button>
+
+      <!-- Indicadores del carrusel -->
+      <div class="carousel-indicators" id="carousel-indicators">
+        <!-- Los indicadores se generarán dinámicamente -->
+      </div>
+    </div>
+
+    <!-- Miniaturas debajo del carrusel -->
+    <div class="d-flex gap-2 mt-3 overflow-auto pb-2" id="thumbnails-container" style="max-width: 100%;">
+      <!-- Las miniaturas se cargarán dinámicamente -->
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="d-flex align-items-start justify-content-between mb-3">
+      <h1 class="fw-bold text-light mb-0">{{ producto.nombre }}</h1>
+      <a href="{% url 'catalog:toggle_favorito' producto.id %}" class="btn btn-outline-danger rounded-circle ms-3"
+        style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;"
+        title="Agregar a favoritos">
+        <i class="bi bi-heart{% if es_favorito %}-fill{% endif %} fs-5"></i>
+      </a>
+    </div>
+
+    <p class="text-secondary mb-3 fs-5">
+      <i class="bi bi-tag-fill text-danger"></i>
+      <span class="text-white">{{ producto.categoria.nombre }}</span>
+    </p>
+
+    {% if producto.descripcion %}
+    <div class="card p-3 mb-4">
+      <p class="text-light mb-0" style="font-size:1.05rem; line-height: 1.6;">{{ producto.descripcion }}</p>
+    </div>
+    {% endif %}
+
+    <hr class="border-secondary my-4">
+
+    {% if variantes %}
+    <h5 class="text-light mb-3 fw-bold">
+      <i class="bi bi-palette text-danger"></i> Elegí tu producto
+    </h5>
+
+    <!-- Colores como círculos visuales en lugar de desplegable -->
+    <div class="mb-4">
+      <label class="form-label text-light fw-semibold d-block mb-3">Color</label>
+      <div id="color-options" class="color-selector-grid">
+        <!-- Los colores se cargarán dinámicamente con JavaScript -->
+      </div>
+    </div>
+
+    <!-- Talles como cuadrados siempre visibles -->
+    <div class="mb-4">
+      <label class="form-label text-light fw-semibold d-block mb-3">Talle</label>
+      <div id="talle-options" class="talle-selector-grid">
+        <!-- Los talles se cargarán dinámicamente con JavaScript -->
+      </div>
+    </div>
+
+    <!-- Información de precio siempre visible -->
+    <div class="card p-4 shadow-custom mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <span class="text-white fw-semibold d-block fs-5">
+            <i class="bi bi-cash-stack text-danger"></i> Precio
+          </span>
+        </div>
+        <span id="info-precio" class="text-danger fw-bold" style="font-size: 2rem;">
+          <!-- Precio se actualizará dinámicamente -->
+          <span class="text-secondary" style="font-size: 1.2rem;">Seleccioná opciones</span>
+        </span>
+      </div>
+
+      <div id="stock-info" style="display: none;">
+        <small id="info-stock" class="text-success d-block mb-3 fw-semibold">
+          <i class="bi bi-check-circle-fill"></i> <span id="stock-text"></span>
+        </small>
+      </div>
+
+      <div id="sin-stock-info" class="alert alert-danger mb-3" style="display: none;">
+        <i class="bi bi-x-circle-fill"></i> Sin stock disponible para esta combinación
+      </div>
+
+      <!-- Botón siempre visible pero difuminado hasta completar selección -->
+      <button type="button" id="btn-agregar" class="btn btn-danger w-100 fw-semibold py-3 btn-add-cart-disabled"
+        disabled data-variante-id="">
+        <i class="bi bi-cart-plus fs-5"></i> Agregar al carrito
+      </button>
+    </div>
+
+    <!-- Script con datos de imágenes por color -->
+    <script id="imagenes-data" type="application/json">
+      {
+        {% for color, imagenes in imagenes_por_color.items %}
+        "{{ color }}": [
+          {% for img in imagenes %}
+          {
+            "url": "{{ img.imagen.url }}",
+            "orden": {{ img.orden }}
+          }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ]{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      }
+    </script>
+
+    <script id="imagenes-generales-data" type="application/json">
+      [
+        {% for img in imagenes_generales %}
+        {
+          "url": "{{ img.imagen.url }}",
+          "orden": {{ img.orden }}
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ]
+    </script>
+
+    <script id="variantes-data" type="application/json">
+        [
+          {% for var in variantes %}
+          {
+            "id": {{ var.id }},
+            "color": "{{ var.color }}",
+            "talle": "{{ var.talle }}",
+            "precio": {{ var.precio_venta|floatformat:2|default:0|cut:"," }},
+            "stock": {{ var.stock }}
+          }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ]
+      </script>
+
+    {% else %}
+    <div class="alert alert-warning">
+      <i class="bi bi-exclamation-triangle-fill"></i> Este producto no tiene variantes disponibles.
+    </div>
+    {% endif %}
+
+    <div class="mt-4">
+      <a href="{% url 'catalog:list' %}" class="btn btn-outline-light btn-lg px-4">
+        <i class="bi bi-arrow-left"></i> Volver a productos
+      </a>
+    </div>
+  </div>
+</div>
+
+<hr class="border-secondary my-5">
+
+{% if relacionados %}
+<div class="mb-4">
+  <h3 class="text-light">
+    <i class="bi bi-stars text-danger"></i> Productos relacionados
+  </h3>
+</div>
+<div class="row g-4">
+  {% for p in relacionados %}
+  <div class="col-6 col-md-3">
+    <a href="{% url 'catalog:detail' p.id %}" class="text-decoration-none">
+      <div class="card shadow-custom h-100">
+        {% if p.imagen %}
+        <div style="overflow: hidden;">
+          <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}" class="card-img-top"
+            style="height:220px; object-fit:cover;">
+        </div>
+        {% else %}
+        <div style="overflow: hidden;">
+          <img src="{% static 'img/placeholder.png' %}" alt="Sin imagen" class="card-img-top"
+            style="height:220px; object-fit:cover;">
+        </div>
+        {% endif %}
+        <div class="card-body text-center">
+          <h6 class="fw-semibold text-light">{{ p.nombre }}</h6>
+          {% if p.variantes.first %}
+          <p class="text-danger fw-bold mb-0">${{ p.variantes.first.precio_venta }}</p>
+          {% endif %}
+        </div>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<script>
+  const imagenesDataElement = document.getElementById('imagenes-data');
+  const imagenesGeneralesElement = document.getElementById('imagenes-generales-data');
+  let imagenesPorColor = {};
+  let imagenesGenerales = [];
+
+  try {
+    imagenesPorColor = JSON.parse(imagenesDataElement.textContent.trim());
+  } catch (error) {
+    console.error("[v0] ERROR al parsear JSON de imágenes por color:", error);
+  }
+
+  try {
+    imagenesGenerales = JSON.parse(imagenesGeneralesElement.textContent.trim());
+  } catch (error) {
+    console.error("[v0] ERROR al parsear JSON de imágenes generales:", error);
+  }
+
+  const variantesDataElement = document.getElementById('variantes-data');
+  let variantesData = [];
+  try {
+    const content = variantesDataElement.textContent.trim();
+    variantesData = JSON.parse(content);
+  } catch (error) {
+    console.error("[v0] ERROR al parsear JSON:", error);
+    variantesData = [];
+  }
+
+  // Extraer colores y talles únicos
+  const coloresUnicos = [...new Set(variantesData.map(v => v.color))];
+  const tallesUnicos = [...new Set(variantesData.map(v => v.talle))];
+
+  // Mapeo de colores a códigos hexadecimales (puedes expandir esto según tus colores)
+  const colorMap = {
+    'rojo': '#b51f24',
+    'negro': '#000000',
+    'blanco': '#ffffff',
+    'azul': '#0066cc',
+    'verde': '#28a745',
+    'amarillo': '#ffc107',
+    'gris': '#6c757d',
+    'rosa': '#e83e8c',
+    'naranja': '#fd7e14',
+    'violeta': '#6f42c1',
+    'celeste': '#17a2b8',
+    'marron': '#795548'
+  };
+
+  let colorSeleccionado = null;
+  let talleSeleccionado = null;
+
+  function actualizarCarrusel(color) {
+    const carouselInner = document.getElementById('carousel-inner');
+    const carouselIndicators = document.getElementById('carousel-indicators');
+    const thumbnailsContainer = document.getElementById('thumbnails-container');
+
+    let imagenes = [];
+
+    // Si hay un color seleccionado y tiene imágenes específicas, usarlas
+    if (color && imagenesPorColor[color] && imagenesPorColor[color].length > 0) {
+      imagenes = imagenesPorColor[color];
+    }
+    // Si no, usar imágenes generales si existen
+    else if (imagenesGenerales.length > 0) {
+      imagenes = imagenesGenerales;
+    }
+    // Si no hay imágenes específicas, usar la imagen principal del producto
+    else {
+      return; // Mantener la imagen por defecto
+    }
+
+    // Ordenar imágenes por orden
+    imagenes.sort((a, b) => a.orden - b.orden);
+
+    // Limpiar carrusel
+    carouselInner.innerHTML = '';
+    carouselIndicators.innerHTML = '';
+    thumbnailsContainer.innerHTML = '';
+
+    // Crear slides del carrusel
+    imagenes.forEach((img, index) => {
+      // Slide principal
+      const slide = document.createElement('div');
+      slide.className = `carousel-item ${index === 0 ? 'active' : ''}`;
+      slide.innerHTML = `
+        <img src="${img.url}" alt="Imagen ${index + 1}" class="d-block w-100"
+          style="height: 500px; object-fit: cover; border: 3px solid #b51f24;">
+      `;
+      carouselInner.appendChild(slide);
+
+      // Indicador
+      const indicator = document.createElement('button');
+      indicator.type = 'button';
+      indicator.setAttribute('data-bs-target', '#productCarousel');
+      indicator.setAttribute('data-bs-slide-to', index);
+      if (index === 0) indicator.className = 'active';
+      carouselIndicators.appendChild(indicator);
+
+      // Miniatura
+      const thumbnail = document.createElement('div');
+      thumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
+      thumbnail.innerHTML = `
+        <img src="${img.url}" alt="Miniatura ${index + 1}" 
+          style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid ${index === 0 ? '#b51f24' : '#444'};">
+      `;
+      thumbnail.addEventListener('click', () => {
+        const carousel = new bootstrap.Carousel(document.getElementById('productCarousel'));
+        carousel.to(index);
+
+        // Actualizar miniaturas activas
+        document.querySelectorAll('.thumbnail img').forEach((t, i) => {
+          t.style.border = i === index ? '2px solid #b51f24' : '2px solid #444';
+        });
+      });
+      thumbnailsContainer.appendChild(thumbnail);
+    });
+
+    // Actualizar miniaturas cuando cambia el slide
+    const carouselElement = document.getElementById('productCarousel');
+    carouselElement.addEventListener('slid.bs.carousel', (e) => {
+      const activeIndex = e.to;
+      document.querySelectorAll('.thumbnail img').forEach((t, i) => {
+        t.style.border = i === activeIndex ? '2px solid #b51f24' : '2px solid #444';
+      });
+    });
+  }
+
+  // Renderizar opciones de color
+  const colorContainer = document.getElementById('color-options');
+  coloresUnicos.forEach(color => {
+    const colorBtn = document.createElement('button');
+    colorBtn.type = 'button';
+    colorBtn.className = 'color-option';
+    colorBtn.dataset.color = color;
+
+    const colorHex = colorMap[color.toLowerCase()] || '#999999';
+    colorBtn.style.backgroundColor = colorHex;
+
+    // Agregar borde blanco para colores claros
+    if (['blanco', 'amarillo', 'celeste'].includes(color.toLowerCase())) {
+      colorBtn.style.border = '2px solid #666';
+    }
+
+    colorBtn.title = color.charAt(0).toUpperCase() + color.slice(1);
+
+    colorBtn.innerHTML = `<span class="color-check"><i class="bi bi-check-lg"></i></span>`;
+
+    colorContainer.appendChild(colorBtn);
+  });
+
+  // Renderizar opciones de talle
+  const talleContainer = document.getElementById('talle-options');
+  tallesUnicos.forEach(talle => {
+    const talleBtn = document.createElement('button');
+    talleBtn.type = 'button';
+    talleBtn.className = 'talle-option';
+    talleBtn.dataset.talle = talle;
+    talleBtn.textContent = talle.toUpperCase();
+
+    talleContainer.appendChild(talleBtn);
+  });
+
+  // Función para actualizar disponibilidad de talles según color seleccionado
+  function actualizarDisponibilidadTalles() {
+    const talleBtns = document.querySelectorAll('.talle-option');
+
+    talleBtns.forEach(btn => {
+      const talle = btn.dataset.talle;
+
+      if (colorSeleccionado) {
+        // Buscar si existe stock para esta combinación
+        const variante = variantesData.find(v =>
+          v.color === colorSeleccionado && v.talle === talle
+        );
+
+        if (variante && variante.stock > 0) {
+          btn.classList.remove('talle-sin-stock');
+          btn.classList.add('talle-disponible');
+          btn.disabled = false;
+        } else {
+          btn.classList.remove('talle-disponible');
+          btn.classList.add('talle-sin-stock');
+          btn.disabled = true;
+        }
+      } else {
+        // Si no hay color seleccionado, mostrar todos los talles que tienen stock en algún color
+        const tieneStock = variantesData.some(v => v.talle === talle && v.stock > 0);
+
+        if (tieneStock) {
+          btn.classList.remove('talle-sin-stock');
+          btn.classList.add('talle-disponible');
+          btn.disabled = false;
+        } else {
+          btn.classList.remove('talle-disponible');
+          btn.classList.add('talle-sin-stock');
+          btn.disabled = true;
+        }
+      }
+    });
+  }
+
+  // Función para actualizar disponibilidad de colores según talle seleccionado
+  function actualizarDisponibilidadColores() {
+    const colorBtns = document.querySelectorAll('.color-option');
+
+    colorBtns.forEach(btn => {
+      const color = btn.dataset.color;
+
+      if (talleSeleccionado) {
+        // Buscar si existe stock para esta combinación
+        const variante = variantesData.find(v =>
+          v.color === color && v.talle === talleSeleccionado
+        );
+
+        if (variante && variante.stock > 0) {
+          btn.classList.remove('color-sin-stock');
+          btn.disabled = false;
+        } else {
+          btn.classList.add('color-sin-stock');
+          btn.disabled = true;
+        }
+      } else {
+        // Si no hay talle seleccionado, mostrar todos los colores que tienen stock en algún talle
+        const tieneStock = variantesData.some(v => v.color === color && v.stock > 0);
+
+        if (tieneStock) {
+          btn.classList.remove('color-sin-stock');
+          btn.disabled = false;
+        } else {
+          btn.classList.add('color-sin-stock');
+          btn.disabled = true;
+        }
+      }
+    });
+  }
+
+  // Función para actualizar la información de la variante
+  function actualizarInfoVariante() {
+    const btnAgregar = document.getElementById('btn-agregar');
+    const infoPrecio = document.getElementById('info-precio');
+    const stockInfo = document.getElementById('stock-info');
+    const sinStockInfo = document.getElementById('sin-stock-info');
+    const stockText = document.getElementById('stock-text');
+
+    if (!colorSeleccionado || !talleSeleccionado) {
+      // No hay selección completa
+      infoPrecio.innerHTML = '<span class="text-secondary" style="font-size: 1.2rem;">Seleccioná opciones</span>';
+      stockInfo.style.display = 'none';
+      sinStockInfo.style.display = 'none';
+      btnAgregar.classList.add('btn-add-cart-disabled');
+      btnAgregar.disabled = true;
+      btnAgregar.setAttribute('data-variante-id', '');
+      return;
+    }
+
+    // Buscar la variante correspondiente
+    const variante = variantesData.find(v =>
+      v.color === colorSeleccionado && v.talle === talleSeleccionado
+    );
+
+    if (variante) {
+      infoPrecio.textContent = `$${variante.precio.toFixed(2)}`;
+
+      if (variante.stock > 0) {
+        stockText.textContent = `${variante.stock} disponibles`;
+        stockInfo.style.display = 'block';
+        sinStockInfo.style.display = 'none';
+        btnAgregar.classList.remove('btn-add-cart-disabled');
+        btnAgregar.disabled = false;
+        btnAgregar.setAttribute('data-variante-id', variante.id);
+      } else {
+        stockInfo.style.display = 'none';
+        sinStockInfo.style.display = 'block';
+        btnAgregar.classList.add('btn-add-cart-disabled');
+        btnAgregar.disabled = true;
+        btnAgregar.setAttribute('data-variante-id', '');
+      }
+    }
+  }
+
+  // Event listeners para colores
+  colorContainer.addEventListener('click', (e) => {
+    const colorBtn = e.target.closest('.color-option');
+    if (!colorBtn || colorBtn.disabled) return;
+
+    // Remover selección anterior
+    document.querySelectorAll('.color-option').forEach(btn => {
+      btn.classList.remove('color-selected');
+    });
+
+    // Agregar selección actual
+    colorBtn.classList.add('color-selected');
+    colorSeleccionado = colorBtn.dataset.color;
+
+    actualizarCarrusel(colorSeleccionado);
+
+    // Actualizar disponibilidad de talles
+    actualizarDisponibilidadTalles();
+    actualizarInfoVariante();
+  });
+
+  // Event listeners para talles
+  talleContainer.addEventListener('click', (e) => {
+    const talleBtn = e.target.closest('.talle-option');
+    if (!talleBtn || talleBtn.disabled) return;
+
+    // Remover selección anterior
+    document.querySelectorAll('.talle-option').forEach(btn => {
+      btn.classList.remove('talle-selected');
+    });
+
+    // Agregar selección actual
+    talleBtn.classList.add('talle-selected');
+    talleSeleccionado = talleBtn.dataset.talle;
+
+    // Actualizar disponibilidad de colores
+    actualizarDisponibilidadColores();
+    actualizarInfoVariante();
+  });
+
+  // Inicializar disponibilidad
+  actualizarDisponibilidadTalles();
+  actualizarDisponibilidadColores();
+
+  // Event listener para agregar al carrito
+  document.getElementById('btn-agregar').addEventListener('click', async function () {
+    const varianteId = this.getAttribute('data-variante-id');
+
+    if (!varianteId) return;
+
+    try {
+      const res = await fetch(`/cart/add/${varianteId}/`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        const alertBox = document.createElement('div');
+        alertBox.innerHTML = '<i class="bi bi-check-circle-fill"></i> Producto agregado al carrito';
+        alertBox.style.cssText = 'position:fixed;top:20px;right:20px;padding:15px 20px;background:#28a745;color:white;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.3);z-index:9999;font-weight:600;';
+        document.body.appendChild(alertBox);
+        setTimeout(() => alertBox.remove(), 2000);
+
+        const cartCount = document.querySelector('.badge.bg-danger');
+        if (cartCount) cartCount.textContent = data.total_items;
+      } else {
+        alert('❌ No se pudo agregar el producto');
+      }
+    } catch (error) {
+      console.error('[v0] Error al agregar al carrito:', error);
+      alert('❌ Error al agregar el producto');
+    }
+  });
+</script>
+{% endblock %}
