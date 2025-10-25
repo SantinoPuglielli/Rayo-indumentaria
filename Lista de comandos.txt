@@ -7,6 +7,8 @@ cd..
 cd..
 cd web
 pip install -r requirements.txt
+pip install django-jazzmin
+pip install reportlab
 python manage.py runserver
 
 Usuario para el admin: hector
