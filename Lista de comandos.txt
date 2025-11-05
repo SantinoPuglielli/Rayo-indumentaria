@@ -1,3 +1,20 @@
+Instalaciones preliminares para el optimo funcionamiento del sistema:
+- SQL server (Una vez instalado importar el archivo .bacpac adjuntado en el repositorio)
+-ODBC Driver 17 for SQL Server (se puede descargar desde el siguiente link: https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver17)
+
+Para que el sistema funcione correctamente primero hay que modificar el bloque de "databases" del arhcivo "settings.py" ubicado en la carpeta rayo_shop por el siguiente:
+DATABASES = {
+    "default": {
+        "ENGINE": "mssql",
+        "NAME": "Rayo indumentaria",
+        "HOST": r"Nombre_de_tu_host",
+        "OPTIONS": {
+            "driver": "ODBC Driver 17 for SQL Server",
+            "trusted_connection": "yes",
+        },
+    }
+}
+
 Para poder correr el sistema abrir la ruta de la carpeta en cmd y pegar estos comandos(pueden ser pegados todos a la vez):
 python -m venv entorno
 cd entorno
@@ -11,5 +28,5 @@ pip install django-jazzmin
 pip install reportlab
 python manage.py runserver
 
-Usuario para el admin: hector
-Contraseña:1234
+Usario para el admin: admin
+Contraseña: 1234

@@ -136,7 +136,7 @@ JAZZMIN_SETTINGS = {
     "site_title": "Panel Rayo Indumentaria",
     "site_header": "Rayo Indumentaria",
     "site_brand": "Rayo Admin",
-    "site_logo": "img/logo_rayo.png",
+    "site_logo": "img/logo.png",
     "site_icon": "img/favicon.png",
     "welcome_sign": "Bienvenido al panel de administración de Rayo Indumentaria",
     "copyright": "Rayo Indumentaria © 2025",
