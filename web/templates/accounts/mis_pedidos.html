@@ -68,7 +68,7 @@
     border: 1px solid var(--rayo-border);
     border-radius: 10px;
     padding: 2rem;
-    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
   }
 
   .perfil-content h1 {
@@ -182,7 +182,8 @@
       <li><a href="{% url 'accounts:perfil' %}"><i class="bi bi-person-circle"></i> Mi perfil</a></li>
       <li><a href="{% url 'accounts:mis_pedidos' %}" class="active"><i class="bi bi-bag-check"></i> Mis pedidos</a></li>
       <li><a href="{% url 'catalog:favoritos' %}"><i class="bi bi-heart me-2"></i> Favoritos</a></li>
-      <li><a href="#" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a></li>
+      <li><a href="#" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="bi bi-box-arrow-right"></i> Cerrar
+          sesión</a></li>
     </ul>
   </aside>
 
@@ -191,47 +192,48 @@
     <h1><i class="bi bi-bag-check"></i> Mis pedidos</h1>
 
     {% if pedidos %}
-      <table class="pedidos-table">
-        <thead>
-          <tr>
-            <th># Pedido</th>
-            <th>Fecha</th>
-            <th>Total</th>
-            <th>Estado</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for pedido in pedidos %}
-          <tr>
-            <td>{{ pedido.id|stringformat:"04d" }}</td>
-            <td>{{ pedido.fecha_creacion|date:"d/m/Y" }}</td>
-            <td>${{ pedido.total|floatformat:2 }}</td>
-            <td>
-              {% if pedido.estado == 'entregado' %}
-                <span class="badge badge-success">Entregado</span>
-              {% elif pedido.estado == 'pendiente' %}
-                <span class="badge badge-warning">Pendiente</span>
-              {% elif pedido.estado == 'cancelado' %}
-                <span class="badge badge-secondary">Cancelado</span>
-              {% else %}
-                <span class="badge badge-info">{{ pedido.estado|title }}</span>
-              {% endif %}
-            </td>
-            <td>
-              <a href="{% url 'orders:detalle_pedido' pedido.id %}" class="btn-ver">Ver</a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+    <table class="pedidos-table">
+      <thead>
+        <tr>
+          <th># Pedido</th>
+          <th>Fecha</th>
+          <th>Total</th>
+          <th>Estado</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pedido in pedidos %}
+        <tr>
+          <td>{{ pedido.id|stringformat:"04d" }}</td>
+          <td>{{ pedido.fecha|date:"d/m/Y" }}</td>
+          <td>${{ pedido.total|floatformat:2 }}</td>
+          <td>
+            {% if pedido.estado.nombre|lower == 'entregado' %}
+            <span class="badge badge-success">Entregado</span>
+            {% elif pedido.estado.nombre|lower == 'pendiente' %}
+            <span class="badge badge-warning">Pendiente</span>
+            {% elif pedido.estado.nombre|lower == 'cancelado' %}
+            <span class="badge badge-secondary">Cancelado</span>
+            {% else %}
+            <span class="badge badge-info">{{ pedido.estado.nombre }}</span>
+            {% endif %}
+
+          </td>
+          <td>
+            <a href="{% url 'orders:detalle_pedido' pedido.id %}" class="btn-ver">Ver</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
     {% else %}
-      <div class="empty-state">
-        <i class="bi bi-bag-x"></i>
-        <h3>No tienes pedidos aún</h3>
-        <p>Cuando realices tu primera compra, aparecerá aquí.</p>
-        <a href="{% url 'catalog:list' %}" class="btn-ver" style="margin-top: 1rem;">Ver productos</a>
-      </div>
+    <div class="empty-state">
+      <i class="bi bi-bag-x"></i>
+      <h3>No tienes pedidos aún</h3>
+      <p>Cuando realices tu primera compra, aparecerá aquí.</p>
+      <a href="{% url 'catalog:list' %}" class="btn-ver" style="margin-top: 1rem;">Ver productos</a>
+    </div>
     {% endif %}
   </section>
 </div>

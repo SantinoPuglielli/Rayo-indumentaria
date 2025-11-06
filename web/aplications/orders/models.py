@@ -16,9 +16,13 @@ class PedidoEstado(models.Model):
 
 
 class Pedido(models.Model):
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="pedidos")
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name="pedidos"
+    )
     fecha = models.DateTimeField(auto_now_add=True)
-    estado = models.ForeignKey(PedidoEstado, on_delete=models.PROTECT, related_name="pedidos")
+    estado = models.ForeignKey("PedidoEstado", on_delete=models.PROTECT, related_name="pedidos")
     total = models.DecimalField(max_digits=12, decimal_places=2)
     direccion = models.CharField(max_length=255)
     numero_factura = models.CharField(max_length=50, unique=True, null=True, blank=True)
@@ -39,7 +43,7 @@ class Pedido(models.Model):
 
 
 class PedidoDetalle(models.Model):
-    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name="detalles")
+    pedido = models.ForeignKey("Pedido", on_delete=models.CASCADE, related_name="detalles")
     variante = models.ForeignKey("catalog.ProductoVariante", on_delete=models.PROTECT, related_name="pedido_detalles")
     cantidad = models.PositiveIntegerField()
     precio_unitario = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -62,3 +66,7 @@ class PedidoDetalle(models.Model):
         return f"{self.pedido} - {self.variante} x {self.cantidad}"
 
 
+class PedidoTemporal(models.Model):
+    usuario = models.ForeignKey('accounts.PerfilUsuario', on_delete=models.CASCADE)
+    data = models.TextField()
+    creado_en = models.DateTimeField(auto_now_add=True)

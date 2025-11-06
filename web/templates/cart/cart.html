@@ -50,12 +50,19 @@
       <span class="cart-total-amount">${{ total|floatformat:2 }}</span>
     </div>
 
-    <form id="mp-form" method="post" action="{% url 'payments:mp_create' %}">
+    {% if user.is_authenticated %}
+    <form id="mp-form" method="post" action="{% url 'payments:crear_preferencia' %}">
       {% csrf_token %}
-      <button class="cart-confirm-btn">
-        <i class="bi bi-credit-card"></i> Pagar con Mercado Pago
+      <button type="submit" class="btn btn-danger w-100">
+        Pagar con Mercado Pago
       </button>
     </form>
+    {% else %}
+    <a href="{% url 'accounts:login' %}" class="btn btn-danger w-100">
+      Iniciá sesión para pagar
+    </a>
+    {% endif %}
+
 
     <a href="{% url 'cart:clear' %}" class="cart-clear-btn">
       <i class="bi bi-trash"></i> Vaciar carrito
@@ -78,7 +85,11 @@
     try {
       const res = await fetch(e.target.action, {
         method: 'POST',
-        headers: { 'X-CSRFToken': csrftoken },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify({}) // el cuerpo vacío (sin pedido_id)
       });
 
       const data = await res.json();
@@ -89,9 +100,11 @@
       }
     } catch (err) {
       alert('Error de red al crear la preferencia');
+      console.error(err);
     }
   });
 </script>
+
 
 {% else %}
 <!-- Estado vacío mejorado -->
