@@ -43,12 +43,12 @@
         <button class="btn btn-link text-decoration-none text-light position-relative p-0 border-0" type="button"
           data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas">
           <i class="bi bi-cart" style="font-size:1.4rem;"></i>
-          {% if cart_count %}
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ cart_count
-            }}</span>
-          {% endif %}
+          <span id="cart-count"
+            class="position-absolute top-0 start-100 translate-middle rounded-pill bg-danger text-white px-1"
+            style="font-size:0.75rem; font-weight:600; min-width:18px; text-align:center;">
+            {{ cart_count|default:"0" }}
+          </span>
         </button>
-
         <div class="dropdown">
           {% if user.is_authenticated %}
           <a class="text-decoration-none text-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -211,30 +211,16 @@
 
     async function updateCartBadge() {
       try {
-        const response = await fetch('/cart/', {
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-          }
+        const res = await fetch('/cart/count/', {
+          headers: { 'X-Requested-With': 'XMLHttpRequest' }
         });
-        const html = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-
-        // Contar items en el carrito
-        const rows = doc.querySelectorAll('table tbody tr');
-        const badge = document.querySelector('.badge.bg-danger');
-
-        if (rows.length > 0) {
-          if (badge) {
-            badge.textContent = rows.length;
-          }
-        } else {
-          if (badge) {
-            badge.remove();
-          }
+        const data = await res.json();
+        const badgeEl = document.getElementById('cart-count');
+        if (badgeEl && typeof data.total_items === 'number') {
+          badgeEl.textContent = data.total_items;
         }
-      } catch (error) {
-        console.error('Error al actualizar badge:', error);
+      } catch (e) {
+        console.error('No se pudo actualizar el contador del carrito', e);
       }
     }
   </script>
@@ -321,6 +307,11 @@
     </div>
   </footer>
 
+
+  <script>
+    // Sincronizar al cargar el sitio
+    document.addEventListener('DOMContentLoaded', updateCartBadge);
+  </script>
 </body>
 
 </html>

@@ -115,3 +115,9 @@ def remove_one(request, variante_id):
 
     return redirect('cart:view')
 
+def cart_count(request):
+    cart = request.session.get('cart', {})
+    if not isinstance(cart, dict):
+        cart = {}
+    total_items = sum(item['qty'] for item in cart.values())
+    return JsonResponse({'total_items': total_items})

@@ -564,14 +564,12 @@
       const data = await res.json();
 
       if (data.success) {
-        const alertBox = document.createElement('div');
-        alertBox.innerHTML = '<i class="bi bi-check-circle-fill"></i> Producto agregado al carrito';
-        alertBox.style.cssText = 'position:fixed;top:20px;right:20px;padding:15px 20px;background:#28a745;color:white;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.3);z-index:9999;font-weight:600;';
-        document.body.appendChild(alertBox);
-        setTimeout(() => alertBox.remove(), 2000);
-
-        const cartCount = document.querySelector('.badge.bg-danger');
-        if (cartCount) cartCount.textContent = data.total_items;
+        // 👉 Actualizar el número del carrito sin recargar
+        const countEl = document.getElementById('cart-count');
+        if (countEl && typeof data.total_items === 'number') {
+          countEl.textContent = data.total_items;
+        }
+        // (Opcional) Sin cartel verde ni alerts
       } else {
         alert('❌ No se pudo agregar el producto');
       }
