@@ -1,23 +1,9 @@
 from django.contrib import admin
-from .models import PerfilUsuario, UsuarioEstado
+from .models import PerfilUsuario, UsuarioEstado, Rol, Funcion, RolFuncion
 
-@admin.register(UsuarioEstado)
-class UsuarioEstadoAdmin(admin.ModelAdmin):
-    list_display = ("id", "nombre")
-    search_fields = ("nombre",)
-    ordering = ("nombre",)
-
-
-@admin.register(PerfilUsuario)
-class PerfilUsuarioAdmin(admin.ModelAdmin):
-    list_display = ("usuario", "rol", "estado", "telefono")
-    list_filter = ("rol", "estado")
-    search_fields = ("usuario__username", "usuario__email", "telefono", "direccion")
-    ordering = ("usuario",)
-
-# ❌ Ocultamos Rol, Funcion y RolFuncion del admin
-from .models import Rol, Funcion, RolFuncion
-for model in (Rol, Funcion, RolFuncion):
+# ✅ Ocultamos todos los modelos de la app 'accounts' del panel de administración
+#    (siguen existiendo, pero no se muestran en el menú lateral)
+for model in (PerfilUsuario, UsuarioEstado, Rol, Funcion, RolFuncion):
     try:
         admin.site.unregister(model)
     except admin.sites.NotRegistered:

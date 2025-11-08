@@ -2,47 +2,130 @@ from django.contrib import admin
 from .models import Pedido, PedidoDetalle
 
 
+# -------------------------------------------
+# 🔒 Solo lectura y vista detallada de pedidos
+# -------------------------------------------
 class PedidoDetalleInline(admin.TabularInline):
     model = PedidoDetalle
     extra = 0
-    fields = ("variante", "cantidad", "precio_unitario")
-    show_change_link = True
+    can_delete = False
+    readonly_fields = (
+        "get_producto",
+        "get_talle",
+        "get_color",
+        "cantidad",
+        "precio_unitario",
+        "get_subtotal",
+    )
+    show_change_link = False
+
+    def get_producto(self, obj):
+        return obj.variante.producto.nombre
+    get_producto.short_description = "Producto"
+
+    def get_talle(self, obj):
+        return obj.variante.talle
+    get_talle.short_description = "Talle"
+
+    def get_color(self, obj):
+        return obj.variante.color
+    get_color.short_description = "Color"
+
+    def get_subtotal(self, obj):
+        if obj.precio_unitario is not None:
+            return f"${obj.cantidad * obj.precio_unitario:,.2f}"
+        return "—"
+    get_subtotal.short_description = "Subtotal"
 
 
 @admin.register(Pedido)
 class PedidoAdmin(admin.ModelAdmin):
-    list_display = ("id", "usuario", "fecha", "estado_coloreado", "get_total")
+    list_display = (
+        "id",
+        "usuario",
+        "estado",
+        "total",
+        "direccion",
+        "fecha",
+        "numero_factura",
+    )
     list_filter = ("estado", "fecha")
-    search_fields = ("usuario__nombre", "usuario__email")
+    search_fields = ("usuario__username", "numero_factura", "direccion")
     inlines = [PedidoDetalleInline]
     ordering = ("-fecha",)
-    list_per_page = 25
+    readonly_fields = (
+        "usuario",
+        "estado",
+        "total",
+        "direccion",
+        "numero_factura",
+        "fecha",
+    )
 
-    def estado_coloreado(self, obj):
-        colores = {
-            "PENDIENTE": "orange",
-            "PAGADO": "green",
-            "CANCELADO": "red",
-            "ENVIADO": "blue",
-            "COMPLETADO": "gray",
-        }
-        color = colores.get(obj.estado.upper(), "black")
-        return f'<b style="color:{color}">{obj.estado}</b>'
-    estado_coloreado.allow_tags = True
-    estado_coloreado.short_description = "Estado"
+    # ❌ Bloqueamos agregar, editar o eliminar
+    def has_add_permission(self, request):
+        return False
 
-    def get_total(self, obj):
-        total = sum(detalle.cantidad * detalle.precio_unitario for detalle in obj.detalles.all())
-        return f"${total:,.2f}"
-    get_total.short_description = "Total"
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    # 🔹 Quitamos acción “eliminar seleccionados”
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if "delete_selected" in actions:
+            del actions["delete_selected"]
+        return actions
 
 
 @admin.register(PedidoDetalle)
 class PedidoDetalleAdmin(admin.ModelAdmin):
-    list_display = ("pedido", "variante", "cantidad", "precio_unitario", "get_subtotal")
-    search_fields = ("pedido__usuario__nombre", "variante__producto__nombre")
-    list_filter = ("pedido__estado", "pedido__fecha")
+    list_display = (
+        "pedido",
+        "get_producto",
+        "get_talle",
+        "get_color",
+        "cantidad",
+        "precio_unitario",
+        "get_subtotal",
+    )
+    search_fields = ("pedido__id", "variante__producto__nombre")
+    ordering = ("-pedido",)
+    readonly_fields = (
+        "pedido",
+        "get_producto",
+        "get_talle",
+        "get_color",
+        "cantidad",
+        "precio_unitario",
+        "get_subtotal",
+    )
+
+    def get_producto(self, obj):
+        return obj.variante.producto.nombre
+    get_producto.short_description = "Producto"
+
+    def get_talle(self, obj):
+        return obj.variante.talle
+    get_talle.short_description = "Talle"
+
+    def get_color(self, obj):
+        return obj.variante.color
+    get_color.short_description = "Color"
 
     def get_subtotal(self, obj):
-        return f"${obj.cantidad * obj.precio_unitario:,.2f}"
+        if obj.precio_unitario is not None:
+            return f"${obj.cantidad * obj.precio_unitario:,.2f}"
+        return "—"
     get_subtotal.short_description = "Subtotal"
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False

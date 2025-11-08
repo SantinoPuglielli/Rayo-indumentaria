@@ -21,9 +21,32 @@ class Producto(models.Model):
     nombre = models.CharField(max_length=150, unique=True)
     descripcion = models.TextField()
     categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT, related_name="productos")
-    imagen = models.ImageField(upload_to="productos/", blank=True, null=True)
+    imagen = models.ImageField(
+        upload_to="productos/",
+        blank=True,
+        null=True,
+        verbose_name="Imagen principal"  # 🔹 Nuevo texto visible en el admin
+    )
 
-    # 🔥 Campos de popularidad (nuevos)
+    # Campos de referencia (ya no se mostrarán en el admin)
+    talle_predeterminado = models.ForeignKey(
+        "Talle",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="productos_predeterminados",
+        verbose_name="Talle"
+    )
+    color_predeterminado = models.ForeignKey(
+        "Color",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="productos_color_predeterminados",
+        verbose_name="Color"
+    )
+
+    # 🔥 Campos internos (solo para uso del sistema)
     clics = models.PositiveIntegerField(default=0)
     agregados_carrito = models.PositiveIntegerField(default=0)
     compras = models.PositiveIntegerField(default=0)
@@ -32,19 +55,13 @@ class Producto(models.Model):
     class Meta:
         verbose_name = "Producto"
         verbose_name_plural = "Productos"
-        indexes = [
-            models.Index(fields=["categoria"], name="idx_producto_categoria"),
-        ]
+        indexes = [models.Index(fields=["categoria"], name="idx_producto_categoria")]
         ordering = ["nombre"]
 
     def __str__(self):
         return self.nombre
 
     def popularidad(self):
-        """
-        Calcula un puntaje de popularidad basado en la interacción del usuario.
-        Se usa para decidir qué productos se muestran en la sección de destacados.
-        """
         return self.clics + (self.agregados_carrito * 2) + (self.compras * 3) + (self.favoritos * 2)
 
 
@@ -60,14 +77,7 @@ class ProductoVariante(models.Model):
         verbose_name = "Variante de producto"
         verbose_name_plural = "Variantes de producto"
         unique_together = (("producto", "talle", "color"),)
-        indexes = [
-            models.Index(fields=["producto"], name="idx_var_producto"),
-        ]
-        constraints = [
-            models.CheckConstraint(check=models.Q(stock__gte=0), name="ck_var_stock_gte_0"),
-            models.CheckConstraint(check=models.Q(precio_compra__gte=0), name="ck_var_pc_gte_0"),
-            models.CheckConstraint(check=models.Q(precio_venta__gte=0), name="ck_var_pv_gte_0"),
-        ]
+        indexes = [models.Index(fields=["producto"], name="idx_var_producto")]
         ordering = ["producto__nombre", "talle", "color"]
 
     def __str__(self):
@@ -79,12 +89,12 @@ class ProductoImagen(models.Model):
     color = models.CharField(max_length=50, blank=True, null=True, help_text="Dejar vacío para imagen general del producto")
     imagen = models.ImageField(upload_to="productos/galeria/")
     orden = models.PositiveIntegerField(default=0, help_text="Orden de aparición en el carrusel")
-    
+
     class Meta:
         verbose_name = "Imagen de producto"
         verbose_name_plural = "Imágenes de productos"
         ordering = ["producto", "color", "orden"]
-    
+
     def __str__(self):
         if self.color:
             return f"{self.producto.nombre} - {self.color} - Imagen {self.orden}"
@@ -93,7 +103,6 @@ class ProductoImagen(models.Model):
 
 class Favorito(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favoritos")
-    # ⚙️ FIX: cambiado el related_name para evitar conflicto con Producto.favoritos
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name="favoritos_rel")
     fecha_agregado = models.DateTimeField(auto_now_add=True)
 
@@ -104,3 +113,30 @@ class Favorito(models.Model):
 
     def __str__(self):
         return f"{self.usuario.username} - {self.producto.nombre}"
+
+
+class Talle(models.Model):
+    nombre = models.CharField(max_length=10, unique=True)
+
+    class Meta:
+        verbose_name = "Talle"
+        verbose_name_plural = "Talles"
+        ordering = ["nombre"]
+
+    def __str__(self):
+        return self.nombre
+
+
+class Color(models.Model):
+    nombre = models.CharField(max_length=50, unique=True)
+    codigo_hex = models.CharField(
+        max_length=7, blank=True, null=True, help_text="Código HEX opcional (ej: #FF0000)"
+    )
+
+    class Meta:
+        verbose_name = "Color"
+        verbose_name_plural = "Colores"
+        ordering = ["nombre"]
+
+    def __str__(self):
+        return self.nombre
