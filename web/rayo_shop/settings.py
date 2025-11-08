@@ -149,39 +149,48 @@ JAZZMIN_SETTINGS = {
     "copyright": "Rayo Indumentaria © 2025",
     "show_sidebar": True,
     "navigation_expanded": True,
+
     "topmenu_links": [
-        {"name": "Inicio", "url": "admin:index", "permissions": ["auth.view_user"], "icon": "fas fa-home"},
-        {"name": "Ver sitio", "url": "/", "permissions": ["auth.view_user"], "icon": "fas fa-globe"},
-        {"name": "Reportes", "url": "/reports/", "permissions": ["auth.view_user"], "icon": "fas fa-chart-line"},
+        {"name": "Inicio", "url": "admin:index", "icon": "fas fa-home"},
+        {"name": "Ver sitio", "url": "/", "icon": "fas fa-globe"},
+        {"name": "Reportes", "url": "/admin/aplications/reports/", "icon": "fas fa-chart-line"},
     ],
+
+    # Íconos para apps y modelos
     "icons": {
         "accounts": "fas fa-users",
         "catalog": "fas fa-tshirt",
         "orders": "fas fa-shopping-cart",
-        "cart": "fas fa-shopping-bag",
         "payments": "fas fa-credit-card",
         "reports": "fas fa-chart-line",
         "auth": "fas fa-user-shield",
     },
-    "order_with_respect_to": [
-        "accounts",
-        "catalog",
-        "orders",
-        "payments",
-        "reports",
+
+    # Orden y estructura de menú lateral
+    "order_with_respect_to": ["accounts", "catalog", "orders", "payments", "reports"],
+
+    # 🚫 Ocultamos modelos secundarios o técnicos
+    "hide_models": [
+    "accounts.PerfilUsuario",
+    "accounts.UsuarioEstado",
+    "accounts.Rol",
+    "accounts.Funcion",
+    "accounts.RolFuncion",
     ],
+    # Enlaces rápidos personalizados
+    "custom_links": {
+        "catalog": [{
+            "name": "Ver productos",
+            "url": "/admin/aplications/catalog/producto/",
+            "icon": "fas fa-tshirt",
+        }],
+    },
+
     "show_ui_builder": True,
     "changeform_format": "horizontal_tabs",
     "language_chooser": False,
-    "custom_links": {
-        "accounts": [{
-            "name": "Ver sitio web",
-            "url": "/",
-            "icon": "fas fa-home",
-            "permissions": ["auth.view_user"]
-        }]
-    },
 }
+
 
 JAZZMIN_UI_TWEAKS = {
     "theme": "darkly",

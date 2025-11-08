@@ -40,6 +40,12 @@ class Pedido(models.Model):
 
     def __str__(self):
         return f"Pedido #{self.pk} - {self.usuario}"
+    
+    def calcular_total(self):
+        total = sum(detalle.subtotal for detalle in self.detalles.all())
+        self.total = total
+        self.save()
+        return total
 
 
 class PedidoDetalle(models.Model):
@@ -48,6 +54,13 @@ class PedidoDetalle(models.Model):
     cantidad = models.PositiveIntegerField()
     precio_unitario = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
+       
+    @property
+    def subtotal(self):
+        if self.precio_unitario is not None:
+            return self.cantidad * self.precio_unitario
+        return 0
+    
     class Meta:
         verbose_name = "Detalle de pedido"
         verbose_name_plural = "Detalles de pedido"
