@@ -13,22 +13,19 @@ environ.Env.read_env(BASE_DIR / ".env")
 # -----------------------------------------------------------
 # 🔐 Seguridad y modo debug
 # -----------------------------------------------------------
-SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret')
-DEBUG = env.bool("DEBUG", True)
+SECRET_KEY = env("SECRET_KEY")
+DEBUG = env.bool("DEBUG")
 
 ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    ".ngrok-free.app",     # Permite túneles de ngrok para entorno sandbox
-    ".ngrok-free.dev",
+    "www.rayoindumentaria.shop",
+    "rayoindumentaria.shop",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://*.ngrok-free.app",
-    "https://*.ngrok-free.dev",
-    "http://127.0.0.1:8000",
-    "http://localhost:8000",
+    "https://www.rayoindumentaria.shop",
+    "https://rayoindumentaria.shop",
 ]
+
 
 # -----------------------------------------------------------
 # 🧱 Aplicaciones instaladas
@@ -96,14 +93,18 @@ WSGI_APPLICATION = 'rayo_shop.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "mssql",
-        "NAME": "Rayo indumentaria",
-        "HOST": r"localhost\SQLEXPRESS",
+        "NAME": env("DB_NAME"),
+        "HOST": env("DB_HOST"),
+        "PORT": env("DB_PORT"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
         "OPTIONS": {
-            "driver": "ODBC Driver 17 for SQL Server",
-            "trusted_connection": "yes",
+            "driver": "ODBC Driver 18 for SQL Server",
+            "TrustServerCertificate": "yes",
         },
     }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = []
 
