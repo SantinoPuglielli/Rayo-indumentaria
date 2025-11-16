@@ -139,6 +139,7 @@ SITE_URL = env("SITE_URL", default="http://127.0.0.1:8000")
 # -----------------------------------------------------------
 # 🎨 Jazzmin - panel administrativo
 # -----------------------------------------------------------
+
 JAZZMIN_SETTINGS = {
     "site_title": "Panel Rayo Indumentaria",
     "site_header": "Rayo Indumentaria",
@@ -153,7 +154,7 @@ JAZZMIN_SETTINGS = {
     "topmenu_links": [
         {"name": "Inicio", "url": "admin:index", "icon": "fas fa-home"},
         {"name": "Ver sitio", "url": "/", "icon": "fas fa-globe"},
-        {"name": "Reportes", "url": "/admin/aplications/reports/", "icon": "fas fa-chart-line"},
+       {"name": "Reportes", "url": "/reports/", "icon": "fas fa-chart-line"},
     ],
 
     # Íconos para apps y modelos
@@ -179,10 +180,10 @@ JAZZMIN_SETTINGS = {
     ],
     # Enlaces rápidos personalizados
     "custom_links": {
-        "catalog": [{
-            "name": "Ver productos",
-            "url": "/admin/aplications/catalog/producto/",
-            "icon": "fas fa-tshirt",
+        "reports": [{
+            "name": "Ver reportes",
+            "url": "/reports/",
+            "icon": "fas fa-chart-line",
         }],
     },
 
@@ -202,6 +203,7 @@ JAZZMIN_UI_TWEAKS = {
     "button_classes": {"primary": "btn-danger", "secondary": "btn-dark"},
     "actions_sticky_top": True,
 }
+
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
