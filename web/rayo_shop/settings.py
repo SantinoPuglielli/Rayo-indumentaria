@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'aplications.payments',   # ⚡ Tu nueva app de pagos (Mercado Pago)
     'aplications.reports',
     'core',
+    'aplications.auditoria',
 ]
 
 # -----------------------------------------------------------
@@ -97,7 +98,7 @@ DATABASES = {
     "default": {
         "ENGINE": "mssql",
         "NAME": "Rayo indumentaria",
-        "HOST": r"localhost\SQLEXPRESS",
+        "HOST": r"DESKTOP-QGF6VK9\SQLEXPRESS",
         "OPTIONS": {
             "driver": "ODBC Driver 17 for SQL Server",
             "trusted_connection": "yes",
