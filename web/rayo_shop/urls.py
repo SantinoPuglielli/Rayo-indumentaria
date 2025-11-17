@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from aplications.auditoria import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,6 +14,7 @@ urlpatterns = [
     path('pago/', include('aplications.payments.urls', namespace='payments')),
     path('orders/', include('aplications.orders.urls')),
     path('accounts/', include('aplications.accounts.urls')),
+    path('registros/', views.auditoria_list, name='auditoria_list'),
 ]
 
 if settings.DEBUG:
