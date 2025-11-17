@@ -27,7 +27,7 @@
         <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'catalog:list' %}">Productos</a></li>
         <li class="nav-item"><a class="nav-link" href="/#nosotros">Nosotros</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+        <li class="nav-item"><a class="nav-link" href="/#contacto">Contacto</a></li>
         {% if user.is_staff %}
         <li><a href="{% url 'admin:index' %}" class="nav-link">Panel de administración</a></li>
         {% endif %}
@@ -269,8 +269,8 @@
           <ul class="footer-links">
             <li><a href="/">Inicio</a></li>
             <li><a href="{% url 'catalog:list' %}">Productos</a></li>
-            <li><a href="#">Nosotros</a></li>
-            <li><a href="#">Contacto</a></li>
+            <li><a href="/#nosotros">Nosotros</a></li>
+            <li><a href="/#contacto">Contacto</a></li>
           </ul>
         </div>
 
@@ -295,11 +295,11 @@
             </li>
             <li>
               <i class="bi bi-envelope-fill"></i>
-              <span>info@rayo.com.ar</span>
+              <span>rayoindumentaria@gmail.</span>
             </li>
             <li>
               <i class="bi bi-phone-fill"></i>
-              <span>+54 11 1234-5678</span>
+              <span>+54 11 3658-3581</span>
             </li>
           </ul>
         </div>

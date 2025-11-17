@@ -35,13 +35,15 @@ a {
 }
 
 .logo-img {
-  height: 48px;
+  height: 75px;
+  /* Aumentado */
   width: auto;
   border-radius: 50%;
   border: 2px solid #b51f24;
   padding: 2px;
-  box-shadow: 0 0 8px rgba(181, 31, 36, 0.4);
+  box-shadow: 0 0 10px rgba(181, 31, 36, 0.5);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+
 }
 
 .logo-img:hover {
@@ -1313,3 +1315,43 @@ body:has(main.container:has(form[action*="perfil"])) .search {
 #mainCarousel .carousel-indicators {
   display: none !important;
 }
+
+/* ============================================
+   AJUSTE DE COLORES DE TEXTO EN TEMA OSCURO
+   ============================================ */
+
+/* Reemplaza los grises apagados por tonos más claros */
+.text-muted,
+p.text-muted,
+span.text-muted,
+small.text-muted {
+  color: #ccc !important;
+  /* antes era #666 o #999 */
+}
+
+/* Para los párrafos explicativos */
+.text-secondary {
+  color: #ddd !important;
+}
+
+/* Bordes y separadores más visibles */
+hr,
+.border-secondary {
+  border-color: #444 !important;
+}
+
+/* Formularios y labels más claros */
+label.form-label,
+.form-check-label,
+.card p,
+.card h5,
+.card h6 {
+  color: #e5e5e5 !important;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+}
+
