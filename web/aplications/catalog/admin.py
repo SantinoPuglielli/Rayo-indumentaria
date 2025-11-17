@@ -8,6 +8,7 @@ from .models import (
     Talle,
     Color
 )
+from aplications.auditoria.models import Auditoria
 
 # -------------------------------------------
 # 🧾 Formularios personalizados
@@ -29,7 +30,6 @@ class CategoriaAdmin(admin.ModelAdmin):
     list_display = ("nombre", "categoria_padre")
     search_fields = ("nombre",)
     ordering = ("nombre",)
-    verbose_name_plural = "Categorías"
 
 
 # -------------------------------------------
@@ -58,7 +58,7 @@ class ProductoImagenInline(admin.TabularInline):
 
 
 # -------------------------------------------
-# 👕 Productos
+# 👕 ProductoAdmin — Único y correcto
 # -------------------------------------------
 @admin.register(Producto)
 class ProductoAdmin(admin.ModelAdmin):
@@ -75,17 +75,59 @@ class ProductoAdmin(admin.ModelAdmin):
     ordering = ("nombre",)
     list_per_page = 25
 
-    # 🔹 Ocultamos Talle y Color del formulario principal
     fields = ("nombre", "descripcion", "categoria", "imagen")
 
+    # ⭐ Registrar creación y modificación
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+
+        accion = "EDITAR" if change else "CREAR"
+        detalle = f"Producto {'modificado' if change else 'creado'}: {obj.nombre}"
+
+        Auditoria.objects.create(
+            usuario=request.user,
+            accion=accion,
+            tabla_afectada="Producto",
+            registro_id=obj.id,
+            detalle=detalle,
+            ip=request.META.get("REMOTE_ADDR"),
+        )
+
+    # ⭐ Registrar eliminación individual
+    def delete_model(self, request, obj):
+        Auditoria.objects.create(
+            usuario=request.user,
+            accion='ELIMINAR',
+            tabla_afectada='Producto',
+            registro_id=obj.id,
+            detalle=f"Producto eliminado: {obj.nombre}",
+            ip=request.META.get('REMOTE_ADDR')
+        )
+        super().delete_model(request, obj)
+
+    # ⭐ Registrar eliminación en lote
+    def delete_queryset(self, request, queryset):
+        for obj in queryset:
+            Auditoria.objects.create(
+                usuario=request.user,
+                accion='ELIMINAR',
+                tabla_afectada='Producto',
+                registro_id=obj.id,
+                detalle=f"Producto eliminado (lote): {obj.nombre}",
+                ip=request.META.get('REMOTE_ADDR')
+            )
+        super().delete_queryset(request, queryset)
+
+    # -------------------------------------------
+    # 📌 Funciones auxiliares
+    # -------------------------------------------
     def get_precio_min(self, obj):
         variante = obj.variantes.order_by("precio_venta").first()
         return f"${variante.precio_venta}" if variante else "—"
     get_precio_min.short_description = "Precio base"
 
     def get_stock_total(self, obj):
-        total_stock = sum(v.stock for v in obj.variantes.all())
-        return total_stock
+        return sum(v.stock for v in obj.variantes.all())
     get_stock_total.short_description = "Stock total"
 
     def imagen_preview(self, obj):
@@ -97,7 +139,7 @@ class ProductoAdmin(admin.ModelAdmin):
 
 
 # -------------------------------------------
-# 🧹 Ocultamos modelos secundarios del menú
+# 🧹 Ocultar modelos secundarios del menú
 # -------------------------------------------
 for model in (ProductoVariante, ProductoImagen):
     try:
@@ -107,7 +149,7 @@ for model in (ProductoVariante, ProductoImagen):
 
 
 # -------------------------------------------
-# 📏 Referencias (Talle y Color)
+# 📏 Talle
 # -------------------------------------------
 @admin.register(Talle)
 class TalleAdmin(admin.ModelAdmin):
@@ -116,6 +158,9 @@ class TalleAdmin(admin.ModelAdmin):
     ordering = ("nombre",)
 
 
+# -------------------------------------------
+# 🎨 Color
+# -------------------------------------------
 @admin.register(Color)
 class ColorAdmin(admin.ModelAdmin):
     list_display = ("nombre", "codigo_hex")
