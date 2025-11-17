@@ -13,19 +13,22 @@ environ.Env.read_env(BASE_DIR / ".env")
 # -----------------------------------------------------------
 # 🔐 Seguridad y modo debug
 # -----------------------------------------------------------
-SECRET_KEY = env("SECRET_KEY")
-DEBUG = env.bool("DEBUG")
+SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret')
+DEBUG = env.bool("DEBUG", True)
 
 ALLOWED_HOSTS = [
-    "www.rayoindumentaria.shop",
-    "rayoindumentaria.shop",
+    "127.0.0.1",
+    "localhost",
+    ".ngrok-free.app",     # Permite túneles de ngrok para entorno sandbox
+    ".ngrok-free.dev",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://www.rayoindumentaria.shop",
-    "https://rayoindumentaria.shop",
+    "https://*.ngrok-free.app",
+    "https://*.ngrok-free.dev",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
 ]
-
 
 # -----------------------------------------------------------
 # 🧱 Aplicaciones instaladas
@@ -93,18 +96,14 @@ WSGI_APPLICATION = 'rayo_shop.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "mssql",
-        "NAME": env("DB_NAME"),
-        "HOST": env("DB_HOST"),
-        "PORT": env("DB_PORT"),
-        "USER": env("DB_USER"),
-        "PASSWORD": env("DB_PASSWORD"),
+        "NAME": "Rayo indumentaria",
+        "HOST": r"localhost\SQLEXPRESS",
         "OPTIONS": {
-            "driver": "ODBC Driver 18 for SQL Server",
-            "TrustServerCertificate": "yes",
+            "driver": "ODBC Driver 17 for SQL Server",
+            "trusted_connection": "yes",
         },
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = []
 
@@ -140,6 +139,7 @@ SITE_URL = env("SITE_URL", default="http://127.0.0.1:8000")
 # -----------------------------------------------------------
 # 🎨 Jazzmin - panel administrativo
 # -----------------------------------------------------------
+
 JAZZMIN_SETTINGS = {
     "site_title": "Panel Rayo Indumentaria",
     "site_header": "Rayo Indumentaria",
@@ -154,7 +154,7 @@ JAZZMIN_SETTINGS = {
     "topmenu_links": [
         {"name": "Inicio", "url": "admin:index", "icon": "fas fa-home"},
         {"name": "Ver sitio", "url": "/", "icon": "fas fa-globe"},
-        {"name": "Reportes", "url": "/admin/aplications/reports/", "icon": "fas fa-chart-line"},
+       {"name": "Reportes", "url": "/reports/", "icon": "fas fa-chart-line"},
     ],
 
     # Íconos para apps y modelos
@@ -180,10 +180,10 @@ JAZZMIN_SETTINGS = {
     ],
     # Enlaces rápidos personalizados
     "custom_links": {
-        "catalog": [{
-            "name": "Ver productos",
-            "url": "/admin/aplications/catalog/producto/",
-            "icon": "fas fa-tshirt",
+        "reports": [{
+            "name": "Ver reportes",
+            "url": "/reports/",
+            "icon": "fas fa-chart-line",
         }],
     },
 
@@ -203,6 +203,7 @@ JAZZMIN_UI_TWEAKS = {
     "button_classes": {"primary": "btn-danger", "secondary": "btn-dark"},
     "actions_sticky_top": True,
 }
+
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
