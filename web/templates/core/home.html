@@ -61,12 +61,12 @@
 
 
 <!-- Agregando sección Sobre Nosotros -->
-<section class="py-5 mt-5">
+<section id="nosotros" class="py-5 mt-5">
   <div class="row align-items-center g-4">
     <div class="col-lg-6">
       <div class="position-relative">
-        <img src="{% static 'img/about-us.jpg' %}" alt="Sobre Nosotros" class="img-fluid rounded shadow-custom"
-          style="object-fit: cover; width: 100%; height: 400px;">
+        <img src="{% static 'img/logo.png' %}" alt="Sobre Nosotros" class="img-fluid rounded shadow-custom"
+          style="object-fit: contain; width: 100%; height: 500px;">
         <div class="position-absolute top-0 start-0 w-100 h-100 rounded"
           style="background: linear-gradient(135deg, rgba(181, 31, 36, 0.3), rgba(0, 0, 0, 0.5));"></div>
       </div>
@@ -151,12 +151,9 @@
             <p class="fw-bold text-danger fs-4 mb-3">${{ variante.precio_venta }}</p>
             {% endif %}
             {% endwith %}
-            <form method="post" action="/cart/add/{{ p.variantes.first.id }}/" class="mt-auto">
-              {% csrf_token %}
-              <button class="btn btn-outline-danger w-100">
-                <i class="bi bi-cart-plus"></i> Agregar al carrito
-              </button>
-            </form>
+            <button class="btn btn-outline-danger w-100 btn-add-carousel" data-variante="{{ p.variantes.first.id }}">
+              <i class="bi bi-cart-plus"></i> Agregar al carrito
+            </button>
           </div>
         </div>
 
@@ -186,7 +183,7 @@
 
 
 <!-- Agregando sección de Contacto -->
-<section class="py-5 mt-5">
+<section id="contacto" class="py-5 mt-5">
   <div class="text-center mb-5">
     <h2 class="text-light fw-bold">
       <i class="bi bi-envelope-fill text-danger me-2"></i>Contactanos
@@ -243,7 +240,7 @@
           </div>
           <div class="flex-grow-1 ms-3">
             <h6 class="text-light mb-1 fw-bold">Dirección</h6>
-            <p class="text-muted mb-0">Buenos Aires, Argentina</p>
+            <p class="text-muted mb-0">Villa lugano, CABA</p>
           </div>
         </div>
 
@@ -256,7 +253,7 @@
           </div>
           <div class="flex-grow-1 ms-3">
             <h6 class="text-light mb-1 fw-bold">Teléfono</h6>
-            <p class="text-muted mb-0">+54 11 1234-5678</p>
+            <p class="text-muted mb-0">+54 11 3658-3581</p>
           </div>
         </div>
 
@@ -269,7 +266,7 @@
           </div>
           <div class="flex-grow-1 ms-3">
             <h6 class="text-light mb-1 fw-bold">Email</h6>
-            <p class="text-muted mb-0">info@rayo.com.ar</p>
+            <p class="text-muted mb-0">rayoindumentaria@gmail.com</p>
           </div>
         </div>
 
@@ -317,4 +314,60 @@
     });
   }
 </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+
+    // Capturamos el token CSRF
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    // Todos los botones del carrusel
+    const botones = document.querySelectorAll('.btn-add-carousel');
+
+    botones.forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const varianteId = btn.dataset.variante;
+
+        try {
+          const res = await fetch(`/cart/add/${varianteId}/`, {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': csrftoken,
+              'X-Requested-With': 'XMLHttpRequest'
+            }
+          });
+
+          const data = await res.json();
+
+          if (data.success) {
+            // Actualizar badge del carrito
+            const countEl = document.getElementById('cart-count');
+            if (countEl && typeof data.total_items === 'number') {
+              countEl.textContent = data.total_items;
+            }
+
+            // Actualizar el offcanvas si está abierto
+            const cartOffcanvas = document.getElementById('cartOffcanvas');
+            if (cartOffcanvas.classList.contains('show')) {
+              await loadCartContent();
+            }
+
+          } else {
+            alert("No se pudo agregar el producto");
+          }
+        } catch (e) {
+          alert("Error al agregar al carrito");
+          console.error(e);
+        }
+      });
+    });
+
+  });
+</script>
+
 {% endblock %}

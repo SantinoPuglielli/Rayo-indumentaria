@@ -102,7 +102,7 @@
 
             {% with v=p.variantes.all|first %}
               {% if v %}
-                <p class="fw-semibold text-danger fs-5 mb-3">Desde ${{ v.precio_venta }}</p>
+                <p class="fw-semibold text-danger fs-5 mb-3">${{ v.precio_venta|floatformat:"-2" }}</p>
               {% else %}
                 <p class="text-muted mb-3">Sin variantes disponibles</p>
               {% endif %}

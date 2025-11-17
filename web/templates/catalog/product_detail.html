@@ -154,7 +154,7 @@
             "id": {{ var.id }},
             "color": "{{ var.color }}",
             "talle": "{{ var.talle }}",
-            "precio": {{ var.precio_venta|floatformat:2|default:0|cut:"," }},
+            "precio": {{ var.precio_venta|floatformat:"-2"|default:0 }},
             "stock": {{ var.stock }}
           }{% if not forloop.last %},{% endif %}
           {% endfor %}
@@ -494,7 +494,7 @@
     );
 
     if (variante) {
-      infoPrecio.textContent = `$${variante.precio.toFixed(2)}`;
+      infoPrecio.textContent = `$${variante.precio}`;
 
       if (variante.stock > 0) {
         stockText.textContent = `${variante.stock} disponibles`;
@@ -517,14 +517,36 @@
     const colorBtn = e.target.closest('.color-option');
     if (!colorBtn || colorBtn.disabled) return;
 
-    document.querySelectorAll('.color-option').forEach(btn => {
-      btn.classList.remove('color-selected');
-    });
+    const nuevoColor = colorBtn.dataset.color;
+    let colorDesmarcado = false;
 
-    colorBtn.classList.add('color-selected');
-    colorSeleccionado = colorBtn.dataset.color;
+    // Verificar si ya está seleccionado para desmarcar
+    if (colorSeleccionado === nuevoColor) {
+      colorSeleccionado = null;
+      colorBtn.classList.remove('color-selected');
+      colorDesmarcado = true;
+    } else {
+      // Marcar nuevo color
+      document.querySelectorAll('.color-option').forEach(btn => {
+        btn.classList.remove('color-selected');
+      });
+      colorBtn.classList.add('color-selected');
+      colorSeleccionado = nuevoColor;
+    }
 
-    actualizarCarrusel(colorSeleccionado);
+    // Actualizar carrusel solo si se seleccionó un color, o si se desmarcó y queremos volver a las generales
+    if (colorSeleccionado || colorDesmarcado) {
+      actualizarCarrusel(colorSeleccionado);
+    }
+    
+    // Si se desmarca el color, el talle seleccionado puede dejar de ser válido
+    if (colorDesmarcado) {
+        talleSeleccionado = null;
+        document.querySelectorAll('.talle-option').forEach(btn => {
+            btn.classList.remove('talle-selected');
+        });
+    }
+
     actualizarDisponibilidadTalles();
     actualizarInfoVariante();
   });
@@ -533,12 +555,31 @@
     const talleBtn = e.target.closest('.talle-option');
     if (!talleBtn || talleBtn.disabled) return;
 
-    document.querySelectorAll('.talle-option').forEach(btn => {
-      btn.classList.remove('talle-selected');
-    });
+    const nuevoTalle = talleBtn.dataset.talle;
+    let talleDesmarcado = false;
 
-    talleBtn.classList.add('talle-selected');
-    talleSeleccionado = talleBtn.dataset.talle;
+    // Verificar si ya está seleccionado para desmarcar
+    if (talleSeleccionado === nuevoTalle) {
+      talleSeleccionado = null;
+      talleBtn.classList.remove('talle-selected');
+      talleDesmarcado = true;
+    } else {
+      // Marcar nuevo talle
+      document.querySelectorAll('.talle-option').forEach(btn => {
+        btn.classList.remove('talle-selected');
+      });
+      talleBtn.classList.add('talle-selected');
+      talleSeleccionado = nuevoTalle;
+    }
+    
+    // Si se desmarca el talle, el color seleccionado puede dejar de ser válido
+    if (talleDesmarcado) {
+        colorSeleccionado = null;
+        document.querySelectorAll('.color-option').forEach(btn => {
+            btn.classList.remove('color-selected');
+        });
+        actualizarCarrusel(null); // Volver a imágenes generales
+    }
 
     actualizarDisponibilidadColores();
     actualizarInfoVariante();
