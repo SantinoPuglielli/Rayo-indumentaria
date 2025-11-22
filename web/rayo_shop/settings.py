@@ -98,7 +98,7 @@ DATABASES = {
     "default": {
         "ENGINE": "mssql",
         "NAME": "Rayo indumentaria",
-        "HOST": r"DESKTOP-QGF6VK9\SQLEXPRESS",
+        "HOST": r"localhost\SQLEXPRESS",
         "OPTIONS": {
             "driver": "ODBC Driver 17 for SQL Server",
             "trusted_connection": "yes",

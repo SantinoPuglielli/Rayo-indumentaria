@@ -1,0 +1,92 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5 text-light">
+
+    <h2 class="mb-4 d-flex align-items-center gap-2">
+        <i class="bi bi-receipt"></i>
+        Detalle del Pedido #{{ pedido.id|stringformat:"04d" }}
+    </h2>
+
+    <!-- Datos principales del pedido -->
+    <div class="card shadow-custom mb-4" style="background: #121212; border: 1px solid #2a2a2a;">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <small class="text-muted">Fecha</small>
+                    <div class="fw-semibold">{{ pedido.fecha|date:"d/m/Y H:i" }}</div>
+                </div>
+                <div class="col-md-4">
+                    <small class="text-muted">Estado</small><br>
+                    <span class="badge" style="
+                        background-color: {% if pedido.estado.nombre == 'Pagado' %}#0fb9b1
+                        {% else %}#0abde3{% endif %};
+                        padding: 7px 15px;
+                        font-size: 0.9rem;
+                    ">
+                        {{ pedido.estado.nombre }}
+                    </span>
+                </div>
+                <div class="col-md-4">
+                    <small class="text-muted">Dirección</small>
+                    <div class="fw-semibold">{{ pedido.direccion }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detalle de productos -->
+    <h4 class="mb-3">Productos del pedido</h4>
+
+    <div class="card shadow-custom mb-4" style="background: #121212; border: 1px solid #2a2a2a;">
+        <div class="card-body">
+
+            {% for item in detalles %}
+            <div class="d-flex align-items-center justify-content-between py-3 border-bottom border-secondary">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    {% if item.variante.producto.imagen %}
+                    <img src="{{ item.variante.producto.imagen.url }}" alt="{{ item.variante.producto.nombre }}"
+                        style="width: 70px; height: 70px; object-fit: cover; border-radius: 8px;">
+                    {% else %}
+                    <div style="width: 70px; height: 70px; background:#2c2c2c; border-radius:8px;"></div>
+                    {% endif %}
+
+                    <div>
+                        <div class="fw-bold fs-5">{{ item.variante.producto.nombre }}</div>
+                        <div class="text-muted small">
+                            Color: {{ item.variante.color }} —
+                            Talle: {{ item.variante.talle }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-end">
+                    <div>Cantidad: <strong>{{ item.cantidad }}</strong></div>
+                    <div>Precio: ${{ item.precio_unitario }}</div>
+                    <div class="fw-bold text-danger">Subtotal: ${{ item.subtotal }}</div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <!-- Total -->
+    <div class="card shadow-custom mb-4" style="background: #121212; border: 1px solid #2a2a2a;">
+        <div class="card-body text-end">
+            <h3 class="mb-0 text-success">
+                Total del pedido: ${{ pedido.total }}
+            </h3>
+        </div>
+    </div>
+
+    <!-- Botón volver -->
+    <a href="{% url 'accounts:mis_pedidos' %}" class="btn btn-outline-light px-4">
+        <i class="bi bi-arrow-left"></i> Volver a mis pedidos
+    </a>
+
+</div>
+{% endblock %}

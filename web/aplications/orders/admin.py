@@ -1,9 +1,8 @@
 from django.contrib import admin
 from .models import Pedido, PedidoDetalle
 
-
 # -------------------------------------------
-# 🔒 Solo lectura y vista detallada de pedidos
+# 🔍 Vista detallada de productos del pedido
 # -------------------------------------------
 class PedidoDetalleInline(admin.TabularInline):
     model = PedidoDetalle
@@ -53,26 +52,27 @@ class PedidoAdmin(admin.ModelAdmin):
     search_fields = ("usuario__username", "numero_factura", "direccion")
     inlines = [PedidoDetalleInline]
     ordering = ("-fecha",)
+
+    # CAMBIO: estado ya NO es readonly
     readonly_fields = (
         "usuario",
-        "estado",
         "total",
         "direccion",
         "numero_factura",
         "fecha",
     )
 
-    # ❌ Bloqueamos agregar, editar o eliminar
-    def has_add_permission(self, request):
-        return False
-
+    # PERMITIR editar el pedido
     def has_change_permission(self, request, obj=None):
+        return True
+
+    # Mantener deshabilitados: agregar, eliminar
+    def has_add_permission(self, request):
         return False
 
     def has_delete_permission(self, request, obj=None):
         return False
 
-    # 🔹 Quitamos acción “eliminar seleccionados”
     def get_actions(self, request):
         actions = super().get_actions(request)
         if "delete_selected" in actions:

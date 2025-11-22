@@ -4,7 +4,6 @@ from . import views
 app_name = "payments"
 
 urlpatterns = [
-    path("crear-preferencia/", views.crear_preferencia, name="crear_preferencia"),
-    path("webhook/", views.webhook, name="webhook"),
-    path("retorno/", views.retorno, name="retorno"),
+    # Nueva ruta para pago por transferencia
+    path("transferencia/", views.pago_transferencia, name="pago_transferencia"),
 ]
